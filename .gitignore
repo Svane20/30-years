@@ -45,3 +45,6 @@ Thumbs.db
 
 # Brainstorming companion
 .superpowers/
+
+# Playwright MCP output
+.playwright-mcp/
