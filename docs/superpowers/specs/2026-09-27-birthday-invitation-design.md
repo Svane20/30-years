@@ -240,7 +240,7 @@ console errors.
 
 - **CI** (`.github/workflows/ci.yml`): on every push and PR, run `pnpm install
   --frozen-lockfile`, `pnpm test`, and `pnpm build`.
-- **Deploy** (`.github/workflows/deploy.yml`): on pushes to `main`, build with
+- **Deploy** (`.github/workflows/deploy.yml`): on pushes to `master`, build with
   `--base-href /30-years/`, copy `index.html` to `404.html`, and publish with the
   official `actions/upload-pages-artifact` and `actions/deploy-pages` actions.
   No personal access token is needed.
