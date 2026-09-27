@@ -63,8 +63,14 @@ test('refuses a name that is already on the list, ignoring case and extra spaces
 });
 
 test('updates the existing row instead of adding one when asked to', () => {
-  const s = load([[new Date(2026, 0, 1), 'Anna Hansen', 'Ja', 2, 'Glæder mig'], [new Date(), 'Bo Berg', 'Nej', 0, '']]);
-  assert.deepEqual(s.post({ name: 'anna hansen', attending: false, count: 0, message: 'Desværre', update: true }), { ok: true, updated: true });
+  const s = load([
+    [new Date(2026, 0, 1), 'Anna Hansen', 'Ja', 2, 'Glæder mig'],
+    [new Date(), 'Bo Berg', 'Nej', 0, ''],
+  ]);
+  assert.deepEqual(s.post({ name: 'anna hansen', attending: false, count: 0, message: 'Desværre', update: true }), {
+    ok: true,
+    updated: true,
+  });
   assert.deepEqual(s.data(), [
     ['anna hansen', 'Nej', 0, 'Desværre'],
     ['Bo Berg', 'Nej', 0, ''],

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RSVP_ENDPOINT, RSVP_TIMEOUT_MS, RsvpResponse, RsvpService } from './rsvp.service';
+import { DuplicateNameError, RSVP_ENDPOINT, RSVP_TIMEOUT_MS, RsvpResponse, RsvpService } from './rsvp.service';
 
 const ENDPOINT = 'https://script.google.com/macros/s/test/exec';
 const response: RsvpResponse = { name: 'Anna', attending: true, count: 2, message: 'Glæder mig' };
@@ -43,14 +43,33 @@ describe('RsvpService', () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body).count).toBe(0);
   });
 
-  it('resolves when the server answers ok: true', async () => {
+  it('resolves as a new answer when the server answers ok: true', async () => {
     fetchMock.mockResolvedValue(jsonResponse({ ok: true }));
-    await expect(setup().submit(response)).resolves.toBeUndefined();
+    await expect(setup().submit(response)).resolves.toEqual({ updated: false });
   });
 
-  it('rejects when the server answers ok: false', async () => {
+  it('rejects with DuplicateNameError when the name is already on the list', async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ ok: false, error: 'duplicate' }));
+    await expect(setup().submit(response)).rejects.toBeInstanceOf(DuplicateNameError);
+  });
+
+  it('asks the server to update the existing answer, and reports that it did', async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ ok: true, updated: true }));
+    await expect(setup().submit(response, { update: true })).resolves.toEqual({ updated: true });
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ ...response, update: true });
+  });
+
+  it('does not send the update flag for a normal answer', async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ ok: true }));
+    await setup().submit(response);
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).not.toHaveProperty('update');
+  });
+
+  it('rejects with a plain error when the server answers ok: false for another reason', async () => {
     fetchMock.mockResolvedValue(jsonResponse({ ok: false, error: 'invalid name' }));
-    await expect(setup().submit(response)).rejects.toThrow();
+    const rejection = setup().submit(response);
+    await expect(rejection).rejects.toThrow();
+    await expect(rejection).rejects.not.toBeInstanceOf(DuplicateNameError);
   });
 
   it('rejects when the response is not JSON', async () => {
