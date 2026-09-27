@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { invitation } from '../../invitation.config';
 import { provideDanishLocale } from '../../locale';
 import { RsvpService } from '../../services/rsvp.service';
+import { ToastService } from '../../services/toast.service';
 import { Rsvp } from './rsvp';
 
 describe('Rsvp', () => {
@@ -19,6 +20,11 @@ describe('Rsvp', () => {
   });
 
   const query = <T extends Element>(selector: string) => el.querySelector<T>(selector);
+  const toast = () => TestBed.inject(ToastService).current();
+  const formIsEmpty = () =>
+    query<HTMLInputElement>('#rsvp-name')!.value === '' &&
+    query<HTMLTextAreaElement>('#rsvp-message')!.value === '' &&
+    !el.querySelector('.toggle button.on');
   const text = () => el.textContent ?? '';
 
   function type(selector: string, value: string): void {
@@ -122,51 +128,67 @@ describe('Rsvp', () => {
     await new Promise(resolve => setTimeout(resolve));
   });
 
-  it('thanks an attending guest by name', async () => {
-    type('#rsvp-name', 'Anna');
-    clickButton('Ja, jeg kommer');
-    await submitForm();
-    expect(query('form')).toBeNull();
-    expect(text()).toContain('Tak, Anna! 🎉');
-    expect(text()).toContain('Vi glæder os til at se dig.');
-  });
-
-  it('moves focus to the thank-you message so screen readers announce it', async () => {
-    type('#rsvp-name', 'Anna');
-    clickButton('Ja, jeg kommer');
-    await submitForm();
-    await fixture.whenStable();
-    expect(document.activeElement).toBe(query('.thanks'));
-  });
-
   it('keeps the honeypot free of labels that browsers autofill', () => {
     const honeypot = query<HTMLInputElement>('.hp input')!;
     const label = query('.hp label')!;
-    const hints = [honeypot.id, honeypot.name, honeypot.getAttribute('autocomplete') ?? '', label.textContent ?? ''].join(' ').toLowerCase();
+    const hints = [honeypot.id, honeypot.name, honeypot.getAttribute('autocomplete') ?? '', label.textContent ?? '']
+      .join(' ')
+      .toLowerCase();
     for (const word of ['website', 'url', 'email', 'mail', 'phone', 'name', 'address']) {
       expect(hints).not.toContain(word);
     }
     expect(honeypot.getAttribute('autocomplete')).toBe('off');
   });
 
-  it('answers a declining guest kindly', async () => {
+  it('thanks an attending guest in a notification and clears the form', async () => {
+    type('#rsvp-name', '  Anna ');
+    clickButton('Ja, jeg kommer');
+    type('#rsvp-message', 'Glæder mig');
+    await submitForm();
+    expect(toast()).toEqual({ kind: 'success', title: 'Tak, Anna! 🎉', message: 'Vi glæder os til at se dig til brunch.' });
+    expect(query('form')).not.toBeNull();
+    expect(formIsEmpty()).toBe(true);
+    expect(query('#rsvp-count')).toBeNull();
+    expect(text()).not.toContain('Skriv venligst dit navn');
+  });
+
+  it('answers a declining guest kindly in a notification and clears the form', async () => {
     type('#rsvp-name', 'Anna');
     clickButton('Desværre ikke');
     await submitForm();
-    expect(text()).toContain('Ærgerligt, Anna');
-    expect(text()).toContain('Vi kommer til at savne dig!');
+    expect(toast()).toEqual({
+      kind: 'success',
+      title: 'Tak for dit svar, Anna.',
+      message: 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!',
+    });
+    expect(formIsEmpty()).toBe(true);
   });
 
-  it('shows the error message when the service rejects and keeps the input', async () => {
+  it('shows an error notification and keeps what the guest typed when sending fails', async () => {
     submit.mockRejectedValue(new Error('RSVP endpoint is not configured'));
     type('#rsvp-name', 'Anna');
     clickButton('Desværre ikke');
     await submitForm();
 
-    expect(query('[role="alert"]')?.textContent).toContain('Noget gik galt – prøv igen, eller skriv til os på SMS.');
+    expect(toast()).toEqual({
+      kind: 'error',
+      title: 'Dit svar blev ikke sendt.',
+      message: 'Prøv igen om lidt, eller skriv til os på SMS.',
+    });
     expect(query<HTMLInputElement>('#rsvp-name')!.value).toBe('Anna');
+    expect(query('.toggle button.on')?.textContent).toContain('Desværre ikke');
     expect(query<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(false);
-    expect(text()).not.toContain('Tak, Anna');
+  });
+
+  it('can be sent again after an error', async () => {
+    submit.mockRejectedValueOnce(new Error('timeout'));
+    type('#rsvp-name', 'Anna');
+    clickButton('Desværre ikke');
+    await submitForm();
+    await submitForm();
+    expect(submit).toHaveBeenCalledTimes(2);
+    expect(toast()?.kind).toBe('success');
+    expect(formIsEmpty()).toBe(true);
   });
 
   it('pretends success without sending when the honeypot is filled', async () => {
@@ -175,16 +197,6 @@ describe('Rsvp', () => {
     fixture.componentInstance.form.controls.website.setValue('http://spam.example');
     await submitForm();
     expect(submit).not.toHaveBeenCalled();
-    expect(text()).toContain('Ærgerligt, Bot');
-  });
-
-  it('lets the guest send a new answer', async () => {
-    type('#rsvp-name', 'Anna');
-    clickButton('Desværre ikke');
-    await submitForm();
-
-    clickButton('Send et nyt svar');
-    expect(query<HTMLInputElement>('#rsvp-name')!.value).toBe('');
-    expect(text()).not.toContain('Skriv venligst dit navn');
+    expect(toast()?.title).toBe('Tak for dit svar, Bot.');
   });
 });

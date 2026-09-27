@@ -74,13 +74,6 @@ textarea {
   color: var(--error);
 }
 
-.error--box {
-  margin-top: 18px;
-  padding: 10px 14px;
-  border: 1px solid var(--error);
-  border-radius: 12px;
-}
-
 .hp {
   position: absolute;
   left: -9999px;
@@ -93,25 +86,4 @@ textarea {
   margin-top: 26px;
   padding: 14px;
   font-size: 1rem;
-}
-
-.thanks:focus {
-  outline: none;
-}
-
-.thanks__title {
-  margin-bottom: 6px;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.8rem;
-  color: var(--gold);
-}
-
-.link-btn {
-  margin-top: 18px;
-  color: var(--gold);
-  background: none;
-  border: 0;
-  text-decoration: underline;
-  cursor: pointer;
 }

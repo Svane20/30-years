@@ -169,15 +169,12 @@ Heading "Kommer du?", then "Svar venligst senest {rsvpDeadline}". A reactive for
 
 Validation messages appear after a field is touched, or when submit is pressed.
 
-**States:** `idle → sending → success | error`
+**States:** `idle → sending → idle`. *(Revised 2026-09-27: results are shown as notifications, not by replacing the form.)*
 
 - **sending:** the submit button is disabled and reads "Sender…".
-- **success:** the form is replaced by "Tak, {navn}! 🎉 Vi glæder os til at se
-  dig." (attending) or "Ærgerligt, {navn} – vi kommer til at savne dig!" (not
-  attending), plus a "Send et nyt svar" link that resets the form to idle.
-- **error:** the inputs are kept, and the message reads "Noget gik galt – prøv
-  igen, eller skriv til os på SMS." The button is enabled again.
-- **Honeypot filled:** the page shows success without sending anything.
+- **Success:** a notification (bottom of the screen, auto-hides after 6 s, closable) says "Tak, {navn}! 🎉 Vi glæder os til at se dig til brunch." (attending) or "Tak for dit svar, {navn}. Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!" (not attending), and the form is cleared.
+- **Error:** a red notification says "Dit svar blev ikke sendt. Prøv igen om lidt, eller skriv til os på SMS." The inputs are kept and the button is enabled again.
+- **Honeypot filled:** the page shows the success notification without sending anything.
 
 ### 5.7 Footer
 "Vi glæder os til at se dig!" in italic Fraunces, and "K & M · 2026".

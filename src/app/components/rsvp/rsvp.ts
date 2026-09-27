@@ -1,11 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { afterNextRender, Component, ElementRef, inject, Injector, signal, viewChild } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { invitation } from '../../invitation.config';
 import { RsvpResponse, RsvpService } from '../../services/rsvp.service';
+import { ToastService } from '../../services/toast.service';
 
-type RsvpState = 'idle' | 'sending' | 'success' | 'error';
+type RsvpState = 'idle' | 'sending';
 type Field = 'name' | 'attending' | 'count' | 'message';
 
 const notBlank: ValidatorFn = control => (typeof control.value === 'string' && control.value.trim() !== '' ? null : { required: true });
@@ -18,14 +19,12 @@ const notBlank: ValidatorFn = control => (typeof control.value === 'string' && c
 })
 export class Rsvp {
   private readonly rsvp = inject(RsvpService);
-  private readonly injector = inject(Injector);
-  private readonly thanks = viewChild<ElementRef<HTMLElement>>('thanks');
+  private readonly toasts = inject(ToastService);
   private readonly submitAttempted = signal(false);
 
   protected readonly deadline = invitation.rsvpDeadline;
 
   public readonly state = signal<RsvpState>('idle');
-  public readonly submitted = signal<{ name: string; attending: boolean } | null>(null);
 
   public readonly form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [notBlank, Validators.maxLength(100)] }),
@@ -86,21 +85,25 @@ export class Rsvp {
       await this.rsvp.submit(response);
       this.succeed(response);
     } catch {
-      this.state.set('error');
+      // Keep what the guest typed so they can simply press send again.
+      this.toasts.show({ kind: 'error', title: 'Dit svar blev ikke sendt.', message: 'Prøv igen om lidt, eller skriv til os på SMS.' });
+    } finally {
+      this.state.set('idle');
     }
   }
 
-  public reset(): void {
+  /** Thank the guest in a notification and clear the form for the next person. */
+  private succeed(response: RsvpResponse): void {
+    this.toasts.show(
+      response.attending
+        ? { kind: 'success', title: `Tak, ${response.name}! 🎉`, message: 'Vi glæder os til at se dig til brunch.' }
+        : {
+            kind: 'success',
+            title: `Tak for dit svar, ${response.name}.`,
+            message: 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!',
+          },
+    );
     this.form.reset();
     this.submitAttempted.set(false);
-    this.submitted.set(null);
-    this.state.set('idle');
-  }
-
-  private succeed(response: RsvpResponse): void {
-    this.submitted.set({ name: response.name, attending: response.attending });
-    this.state.set('success');
-    // The focused submit button is removed with the form; move focus so screen readers announce the thanks.
-    afterNextRender(() => this.thanks()?.nativeElement.focus(), { injector: this.injector });
   }
 }
