@@ -97,7 +97,11 @@
     flex: 0 0 100%;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease;
+    // Hidden links must not be reachable by Tab or screen readers; visibility flips after the slide-up.
+    visibility: hidden;
+    transition:
+      max-height 0.4s ease,
+      visibility 0s linear 0.4s;
 
     ul {
       flex-direction: column;
@@ -116,6 +120,10 @@
 
     .nav {
       max-height: 260px;
+      visibility: visible;
+      transition:
+        max-height 0.4s ease,
+        visibility 0s;
     }
   }
 }
