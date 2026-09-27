@@ -1,0 +1,164 @@
+.header {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.5s ease;
+
+  &.fixed {
+    background-color: #ffffff;
+    box-shadow: 0 0 8px #cccccc;
+
+    .logo a {
+      color: #000000;
+    }
+
+    .hamburger-btn {
+      border-color: #000000;
+      background-color: #000000;
+    }
+
+    .nav ul li a {
+      color: #555555;
+    }
+  }
+
+  .logo {
+    padding: 0 15px;
+
+    a {
+      font-size: 30px;
+      color: #ffffff;
+      font-weight: bold;
+      font-family: 'Great Vibes', cursive;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.5s ease;
+    }
+  }
+
+  .hamburger-btn {
+    height: 34px;
+    width: 40px;
+    border-radius: 3px;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+    display: none;
+
+    span {
+      display: block;
+      height: 1px;
+      width: 16px;
+      background-color: #ffffff;
+      position: relative;
+      transition: all 0.5s ease;
+
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        height: 1px;
+        width: 100%;
+        left: 0;
+        background-color: #ffffff;
+      }
+
+      &:before {
+        top: -6px;
+      }
+
+      &:after {
+        top: 6px;
+      }
+    }
+  }
+
+  .nav {
+    padding: 0 15px;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.5s ease;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        margin-left: 30px;
+
+        a {
+          display: block;
+          padding: 25px 0;
+          color: #ffffff;
+          font-size: 15px;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: color 0.5s ease;
+
+          &:hover {
+            color: #3e99f4;
+          }
+
+          &.active {
+            color: #3e99f4;
+          }
+        }
+      }
+    }
+
+    &.open {
+      height: 300px;
+    }
+  }
+}
+
+@media (min-width: 860px) {
+  .header .nav {
+    display: block !important;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 859px) {
+  .header {
+    .logo {
+      padding: 8px 15px;
+    }
+
+    .hamburger-btn {
+      display: flex;
+      margin-right: 15px;
+    }
+
+    .nav {
+      flex: 0 0 100%;
+      max-width: 100%;
+      background-color: #ffffff;
+
+      ul {
+        li {
+          display: block;
+          margin-left: 0;
+
+          a {
+            color: #555555;
+            padding: 10px 0;
+          }
+        }
+      }
+    }
+
+    &.fixed {
+      .nav {
+        border-top: 1px solid #cccccc;
+      }
+    }
+  }
+}

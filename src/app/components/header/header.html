@@ -1,0 +1,12 @@
+<header class="header" [class.fixed]="isFixed()">
+  <div class="container">
+    <div class="row align-items-center justify-content-between">
+      <div class="logo">
+        <a [routerLink]="['/']">K & M</a>
+      </div>
+      <div class="hamburger-btn" (click)="toggleNav()">
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
