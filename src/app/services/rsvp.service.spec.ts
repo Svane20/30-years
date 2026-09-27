@@ -82,6 +82,28 @@ describe('RsvpService', () => {
     await assertion;
   });
 
+  it('waits out a slow Apps Script cold start instead of reporting an error', async () => {
+    vi.useFakeTimers();
+    fetchMock.mockImplementation(
+      (_url: string, init: RequestInit) =>
+        new Promise((resolve, reject) => {
+          const timer = setTimeout(() => resolve(jsonResponse({ ok: true })), 17_000); // measured on the live script
+          init.signal?.addEventListener('abort', () => {
+            clearTimeout(timer);
+            reject(new DOMException('Aborted', 'AbortError'));
+          });
+        }),
+    );
+
+    const submitted = setup().submit(response);
+    const outcome = submitted.then(
+      () => 'resolved',
+      () => 'rejected',
+    );
+    await vi.advanceTimersByTimeAsync(17_000);
+    expect(await outcome).toBe('resolved');
+  });
+
   it('rejects without calling fetch when the endpoint is empty', async () => {
     await expect(setup('').submit(response)).rejects.toThrow('RSVP endpoint is not configured');
     expect(fetchMock).not.toHaveBeenCalled();

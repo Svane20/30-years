@@ -193,7 +193,7 @@ about 60 guests.
 - The header is `Content-Type: text/plain;charset=utf-8`, which makes it a CORS
   "simple request" with no preflight. Apps Script cannot answer `OPTIONS`.
 - It reads the JSON response. Only `{ ok: true }` resolves, and anything else rejects.
-- A **10-second timeout** via `AbortController` rejects on timeout.
+- A **30-second timeout** via `AbortController` rejects on timeout. (Raised from 10 s: live Apps Script cold starts measured ~17 s.)
 - When not attending, `count` is sent as `0`.
 
 **Script** (`apps-script/rsvp.gs`, stored in the repo):

@@ -13,7 +13,9 @@ export const RSVP_ENDPOINT = new InjectionToken<string>('RSVP_ENDPOINT', {
   factory: () => invitation.rsvpEndpoint,
 });
 
-export const RSVP_TIMEOUT_MS = 10_000;
+// Apps Script cold starts were measured at ~17 s (then ~1.5 s warm), and the script may wait up to
+// 10 s for its lock, so a shorter timeout reports errors for answers that were actually saved.
+export const RSVP_TIMEOUT_MS = 30_000;
 
 function isAccepted(body: unknown): boolean {
   return typeof body === 'object' && body !== null && (body as Record<string, unknown>)['ok'] === true;
