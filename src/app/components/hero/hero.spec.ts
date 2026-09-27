@@ -131,6 +131,62 @@ describe('Hero', () => {
     expect(fixture.componentInstance.current()).toBe(1);
   });
 
+  describe('full-screen photo', () => {
+    const polaroid = (slot: number) => section.querySelectorAll<HTMLButtonElement>('button.polaroid')[slot];
+    const lightbox = () => (fixture.nativeElement as HTMLElement).querySelector('app-lightbox');
+
+    function tapPolaroid(slot: number, moveBy = 0): void {
+      const target = polaroid(slot);
+      target.dispatchEvent(new PointerEvent('pointerdown', { clientX: 100, bubbles: true }));
+      target.dispatchEvent(new PointerEvent('pointerup', { clientX: 100 + moveBy, bubbles: true }));
+      target.click();
+      fixture.detectChanges();
+    }
+
+    it('opens the tapped polaroid’s current photo without changing the slide', () => {
+      create();
+      vi.advanceTimersByTime(SLIDE_INTERVAL_MS); // slide 2: Mette left, Kasper right
+      fixture.detectChanges();
+      tapPolaroid(1);
+      expect(fixture.componentInstance.current()).toBe(1);
+      expect(lightbox()?.querySelector('img')?.getAttribute('src')).toBe(invitation.slides[1].kasper.full);
+    });
+
+    it('labels each polaroid as a button that opens the photo', () => {
+      create();
+      expect(polaroid(0).getAttribute('aria-label')).toBe(`Vis billede i fuld skærm: ${invitation.slides[0].kasper.alt}`);
+    });
+
+    it('still changes slide on a swipe that starts on a polaroid, without opening it', () => {
+      create();
+      tapPolaroid(0, -60);
+      expect(fixture.componentInstance.current()).toBe(1);
+      expect(lightbox()).toBeNull();
+    });
+
+    it('pauses the slideshow while open and resumes after closing', () => {
+      create();
+      tapPolaroid(0);
+      vi.advanceTimersByTime(SLIDE_INTERVAL_MS * 3);
+      expect(fixture.componentInstance.current()).toBe(0);
+
+      lightbox()!.querySelector<HTMLButtonElement>('button.lightbox__close')!.click();
+      fixture.detectChanges();
+      expect(lightbox()).toBeNull();
+      vi.advanceTimersByTime(SLIDE_INTERVAL_MS);
+      expect(fixture.componentInstance.current()).toBe(1);
+    });
+
+    it('returns focus to the polaroid after closing', () => {
+      create();
+      tapPolaroid(2);
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      fixture.detectChanges();
+      expect(lightbox()).toBeNull();
+      expect(document.activeElement).toBe(polaroid(2));
+    });
+  });
+
   it('renders one dot per slide and marks the current one', () => {
     create();
     const dots = () => Array.from(section.querySelectorAll('.hero__dots span'));

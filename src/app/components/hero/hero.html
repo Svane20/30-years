@@ -8,7 +8,12 @@
 >
   <!-- Each polaroid stacks its photo from every slide; the current one fades in, rippling slot by slot. -->
   @for (slot of slots; track slot) {
-    <figure class="polaroid polaroid--{{ slot }}">
+    <button
+      class="polaroid polaroid--{{ slot }}"
+      type="button"
+      [attr.aria-label]="'Vis billede i fuld skærm: ' + photoAt(slot).alt"
+      (click)="open(slot, $event)"
+    >
       @for (slide of invitation.slides; track $index; let i = $index) {
         <img
           [src]="slide[roleFor(slot, i)].src"
@@ -18,7 +23,7 @@
           draggable="false"
         />
       }
-    </figure>
+    </button>
   }
 
   <div class="hero__title">
@@ -32,3 +37,8 @@
     }
   </div>
 </section>
+
+<!-- Outside the section, so taps in the lightbox never reach the slideshow's tap-to-advance handler. -->
+@if (openPhoto(); as photo) {
+  <app-lightbox [photo]="photo" (closed)="close()" />
+}

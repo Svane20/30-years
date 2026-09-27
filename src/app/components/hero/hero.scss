@@ -22,6 +22,8 @@
   background: var(--polaroid);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
   transform: rotate(var(--tilt));
+  border: 0;
+  cursor: zoom-in;
 
   // All slides' photos sit on top of each other inside the frame; only the current one is opaque.
   img {
