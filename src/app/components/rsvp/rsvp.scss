@@ -13,8 +13,14 @@ legend {
   color: var(--gold);
 }
 
+// Browsers ignore a <legend>'s top margin, so the fieldset carries the gap other labels get.
 fieldset {
   border: 0;
+  margin-top: 18px;
+
+  legend {
+    margin-top: 0;
+  }
 }
 
 input,
