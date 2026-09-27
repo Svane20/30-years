@@ -1,0 +1,80 @@
+<section class="section" id="svar">
+  <div class="container narrow">
+    <h2 class="section-title">Kommer du?</h2>
+
+    @if (state() === 'success') {
+      <div class="thanks" role="status">
+        @if (submitted()?.attending) {
+          <p class="thanks__title">Tak, {{ submitted()?.name }}! 🎉</p>
+          <p>Vi glæder os til at se dig.</p>
+        } @else {
+          <p class="thanks__title">Ærgerligt, {{ submitted()?.name }}</p>
+          <p>Vi kommer til at savne dig!</p>
+        }
+        <button class="link-btn" type="button" (click)="reset()">Send et nyt svar</button>
+      </div>
+    } @else {
+      <p>Svar venligst senest {{ deadline | date: 'd. MMMM' }}</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <label for="rsvp-name">Navn</label>
+        <input id="rsvp-name" type="text" formControlName="name" autocomplete="name" maxlength="100" />
+        @if (showError('name')) {
+          <p class="error">Skriv venligst dit navn</p>
+        }
+
+        <fieldset>
+          <legend>Deltager du?</legend>
+          <div class="toggle">
+            <button
+              type="button"
+              [class.on]="form.controls.attending.value === true"
+              [attr.aria-pressed]="form.controls.attending.value === true"
+              (click)="setAttending(true)"
+            >
+              Ja, jeg kommer 🎉
+            </button>
+            <button
+              type="button"
+              [class.on]="form.controls.attending.value === false"
+              [attr.aria-pressed]="form.controls.attending.value === false"
+              (click)="setAttending(false)"
+            >
+              Desværre ikke
+            </button>
+          </div>
+          @if (showError('attending')) {
+            <p class="error">Vælg venligst ja eller nej</p>
+          }
+        </fieldset>
+
+        @if (form.controls.attending.value === true) {
+          <label for="rsvp-count">Antal personer (inkl. dig selv)</label>
+          <input id="rsvp-count" type="number" formControlName="count" min="1" max="10" inputmode="numeric" />
+          @if (showError('count')) {
+            <p class="error">Vælg mellem 1 og 10 personer</p>
+          }
+        }
+
+        <label for="rsvp-message">Besked (valgfri)</label>
+        <textarea id="rsvp-message" formControlName="message" rows="3" maxlength="500"></textarea>
+        @if (showError('message')) {
+          <p class="error">Højst 500 tegn</p>
+        }
+
+        <div class="hp" aria-hidden="true">
+          <label for="rsvp-website">Website</label>
+          <input id="rsvp-website" type="text" formControlName="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        @if (state() === 'error') {
+          <p class="error error--box" role="alert">Noget gik galt – prøv igen, eller skriv til os på SMS.</p>
+        }
+
+        <button class="btn btn--block" type="submit" [disabled]="state() === 'sending'">
+          {{ state() === 'sending' ? 'Sender…' : 'Send svar' }}
+        </button>
+      </form>
+    }
+  </div>
+</section>

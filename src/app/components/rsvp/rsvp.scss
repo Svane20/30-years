@@ -1,0 +1,107 @@
+form {
+  margin-top: 8px;
+  text-align: left;
+}
+
+label,
+legend {
+  display: block;
+  margin: 18px 0 6px;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+fieldset {
+  border: 0;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  color: var(--cream);
+  background: var(--navy-alt);
+  border: 1px solid var(--gold-line);
+  border-radius: 12px;
+
+  &:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+  }
+}
+
+input[type='number'] {
+  width: 110px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.toggle {
+  display: flex;
+  gap: 8px;
+
+  button {
+    flex: 1;
+    padding: 12px;
+    color: var(--cream);
+    background: var(--navy-alt);
+    border: 1px solid var(--gold-line);
+    border-radius: 12px;
+    cursor: pointer;
+
+    &.on {
+      color: var(--navy);
+      background: var(--gold);
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+  }
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--error);
+}
+
+.error--box {
+  margin-top: 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--error);
+  border-radius: 12px;
+}
+
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.btn--block {
+  margin-top: 26px;
+  padding: 14px;
+  font-size: 1rem;
+}
+
+.thanks__title {
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: var(--gold);
+}
+
+.link-btn {
+  margin-top: 18px;
+  color: var(--gold);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
