@@ -1,6 +1,6 @@
 import { Invitation } from './invitation.model';
 
-// Venue, date and start time are real; deadline, endpoint, photos and wish lists are placeholders –
+// Venue, date, start time and deadline are real; endpoint, photos and wish lists are placeholders –
 // replace them before sharing the link.
 export const invitation = {
   names: 'Kasper & Mette',
@@ -11,7 +11,7 @@ export const invitation = {
     mapEmbedUrl: 'https://maps.google.com/maps?q=%C3%85rslev%20Forsamlingshus%2C%20Byst%C3%A6vnet%2013%2C%205792%20%C3%85rslev&z=16&output=embed',
     mapsUrl: 'https://www.google.com/maps/place/%C3%85rslev+Forsamlingshus/@55.2977523,10.4533056,17z',
   },
-  rsvpDeadline: new Date('2027-01-09T23:59:59'),
+  rsvpDeadline: new Date('2027-01-02T23:59:59'),
   rsvpEndpoint: '',
   photos: [
     { src: 'assets/images/photos/placeholder-1.svg', alt: 'Pladsholder – foto 1' },
