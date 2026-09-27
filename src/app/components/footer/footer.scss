@@ -1,0 +1,14 @@
+.footer {
+  padding: 48px 16px;
+  text-align: center;
+  background: var(--navy-alt);
+}
+
+.footer__line {
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: var(--gold);
+}

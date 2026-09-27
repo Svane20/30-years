@@ -1,0 +1,20 @@
+<section class="section section--alt" id="oensker">
+  <div class="container">
+    <h2 class="section-title">Ønskelister</h2>
+
+    <ul class="wishlists">
+      @for (list of wishlists; track list.name) {
+        <li>
+          <a class="card wish" [href]="list.url" target="_blank" rel="noopener">
+            <span class="wish__avatar" aria-hidden="true">{{ list.initials }}</span>
+            <span class="wish__body">
+              <strong>{{ list.name }}</strong>
+              {{ list.text }}
+            </span>
+            <span class="btn">Se</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+<section class="section" id="kort">
+  <div class="container narrow">
+    <h2 class="section-title">Her fester vi</h2>
+
+    <div class="map">
+      <iframe
+        [src]="mapEmbedUrl"
+        title="Kort over {{ venue.name }}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <p class="venue">
+      <strong>{{ venue.name }}</strong><br />
+      {{ venue.address }}
+    </p>
+
+    <a class="btn btn--outline" [href]="venue.mapsUrl" target="_blank" rel="noopener">Åbn i Google Maps</a>
+  </div>
+</section>

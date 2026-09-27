@@ -1,0 +1,48 @@
+.wishlists {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.wish {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  text-align: left;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--gold);
+  }
+}
+
+.wish__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.wish__body {
+  flex: 1;
+
+  strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+  }
+}
+
+@media (min-width: 860px) {
+  .wishlists {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
