@@ -1,7 +1,8 @@
 .hero {
+  // Hero height, also used to size the phone polaroids so they fill the space without touching the title.
+  --hero-h: max(540px, min(100svh, 760px));
   position: relative;
-  height: min(100svh, 760px);
-  min-height: 540px;
+  height: var(--hero-h);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,9 +39,14 @@
   }
 }
 
-// The top two cards are anchored just below the header (not a %), so on every phone height they sit above the title card.
+// Phones: the top two cards sit just below the header (72px) and are as large as fits above the title
+// (title top ≈ half the hero minus 75px; a tilted card is ~1.34× its width tall), capped at 40vw so the two never overlap.
+.polaroid--0,
+.polaroid--1 {
+  --w: min(40vw, calc((var(--hero-h) / 2 - 160px) / 1.34));
+}
+
 .polaroid--0 {
-  --w: 36vw;
   --tilt: -9deg;
   --ripple: 0ms;
   left: 4%;
@@ -48,7 +54,6 @@
 }
 
 .polaroid--1 {
-  --w: 36vw;
   --tilt: 8deg;
   --ripple: 150ms;
   right: 4%;
@@ -56,10 +61,11 @@
 }
 
 .polaroid--2 {
-  --w: 38vw;
+  // As large as fits between the title and the dots, centred.
+  --w: min(46vw, calc((var(--hero-h) * 0.43 - 95px) / 1.25));
   --tilt: -3deg;
   --ripple: 300ms;
-  left: 31%;
+  left: calc(50% - var(--w) / 2);
   bottom: 7%;
 }
 
