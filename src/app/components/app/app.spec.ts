@@ -17,5 +17,6 @@ describe('App', () => {
     }
 
     expect(el.querySelector('main + app-footer')).not.toBeNull();
+    expect(el.querySelector('app-toast')).not.toBeNull();
   });
 });

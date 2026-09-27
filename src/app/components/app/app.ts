@@ -5,10 +5,11 @@ import { Hero } from '../hero/hero';
 import { InvitationDetails } from '../invitation/invitation';
 import { LocationSection } from '../location/location';
 import { Rsvp } from '../rsvp/rsvp';
+import { ToastBar } from '../toast/toast';
 import { Wishlists } from '../wishlists/wishlists';
 
 @Component({
-  imports: [Header, Hero, InvitationDetails, LocationSection, Wishlists, Rsvp, Footer],
+  imports: [Header, Hero, InvitationDetails, LocationSection, Wishlists, Rsvp, Footer, ToastBar],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
