@@ -1,0 +1,27 @@
+<section
+  class="hero"
+  id="home"
+  aria-label="Billeder af Kasper og Mette"
+  (pointerdown)="onPointerDown($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerCancel()"
+>
+  @for (photoIndex of state().slots; track $index; let slot = $index) {
+    <figure class="polaroid polaroid--{{ slot }}">
+      @for (i of [photoIndex]; track i) {
+        <img [src]="invitation.photos[i].src" [alt]="invitation.photos[i].alt" draggable="false" />
+      }
+    </figure>
+  }
+
+  <div class="hero__title">
+    <h1>Vi fylder<br />30!</h1>
+    <p>{{ invitation.names }}</p>
+  </div>
+
+  <div class="hero__dots" aria-hidden="true">
+    @for (photo of invitation.photos; track photo.src) {
+      <span [class.active]="$index === state().current"></span>
+    }
+  </div>
+</section>

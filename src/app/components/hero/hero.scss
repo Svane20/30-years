@@ -1,0 +1,134 @@
+.hero {
+  position: relative;
+  height: min(100svh, 760px);
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  cursor: pointer;
+  background: radial-gradient(circle at 50% 40%, var(--navy-alt), var(--navy) 70%);
+}
+
+.polaroid {
+  position: absolute;
+  width: var(--w);
+  aspect-ratio: 5 / 6;
+  margin: 0;
+  padding: 8px 8px 28px;
+  background: var(--polaroid);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  transform: rotate(var(--tilt));
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fade-in 800ms ease both;
+  }
+}
+
+.polaroid--0 {
+  --w: 44vw;
+  --tilt: -9deg;
+  left: 4%;
+  top: 13%;
+}
+
+.polaroid--1 {
+  --w: 40vw;
+  --tilt: 8deg;
+  right: 4%;
+  top: 24%;
+}
+
+.polaroid--2 {
+  --w: 38vw;
+  --tilt: -3deg;
+  left: 31%;
+  bottom: 7%;
+}
+
+.hero__title {
+  position: relative;
+  z-index: 1;
+  padding: 14px 26px;
+  border-radius: 18px;
+  background: rgba(20, 22, 31, 0.8);
+  text-align: center;
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 13vw, 5.5rem);
+    line-height: 0.95;
+    color: var(--gold);
+  }
+
+  p {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+}
+
+.hero__dots {
+  position: absolute;
+  z-index: 1;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+
+  span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+  }
+
+  .active {
+    background: var(--gold);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaroid img {
+    animation: none;
+  }
+}
+
+@media (min-width: 860px) {
+  .polaroid--0 {
+    --w: 270px;
+    left: calc(50% - 470px);
+    top: 16%;
+  }
+
+  .polaroid--1 {
+    --w: 250px;
+    right: calc(50% - 460px);
+    left: auto;
+    top: 22%;
+  }
+
+  .polaroid--2 {
+    --w: 220px;
+    left: calc(50% - 110px);
+    bottom: 5%;
+  }
+}
