@@ -10,7 +10,7 @@ function run(photoCount: number, steps: number): SlideshowState[] {
 
 describe('slideshow', () => {
   it('starts with the first three photos in the three slots', () => {
-    expect(initialSlideshow(5)).toEqual({ slots: [0, 1, 2], nextSlot: 0, nextPhoto: 3, current: 0 });
+    expect(initialSlideshow(5)).toEqual({ slots: [0, 1, 2], nextSlot: 0, nextPhoto: 3, current: 2 });
   });
 
   it('puts the next photo into the next slot in turn', () => {
@@ -47,6 +47,6 @@ describe('slideshow', () => {
     const [start, next] = run(3, 1);
     expect(next.slots).not.toEqual(start.slots);
     expect([...next.slots].sort()).toEqual([0, 1, 2]);
-    expect(next.current).toBe(next.slots[0]);
+    expect(next.current).toBe(next.slots[2]);
   });
 });

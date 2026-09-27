@@ -12,15 +12,16 @@ export interface SlideshowState {
 }
 
 export function initialSlideshow(photoCount: number): SlideshowState {
-  return { slots: [0, 1, 2], nextSlot: 0, nextPhoto: SLOT_COUNT % photoCount, current: 0 };
+  // Photos 0–2 start on screen; the dots mark the newest one.
+  return { slots: [0, 1, 2], nextSlot: 0, nextPhoto: SLOT_COUNT % photoCount, current: SLOT_COUNT - 1 };
 }
 
 export function advanceSlideshow(state: SlideshowState, photoCount: number): SlideshowState {
   if (photoCount <= SLOT_COUNT) {
     // Every photo is already on screen, so move them between slots instead. Shifting left
-    // brings the next photo in order into slot 0, so the dots count up 1, 2, 3.
+    // puts the next photo in order into the last slot, so the dots count up 1, 2, 3.
     const slots = [state.slots[1], state.slots[2], state.slots[0]];
-    return { ...state, slots, current: slots[0] };
+    return { ...state, slots, current: slots[SLOT_COUNT - 1] };
   }
 
   const slots = [...state.slots];
