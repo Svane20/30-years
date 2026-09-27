@@ -1,9 +1,26 @@
-<header class="header" [class.fixed]="isFixed()">
-  <div class="container">
-    <div class="row align-items-center justify-content-between">
-      <div class="logo">
-        <a href="#home">K &amp; M</a>
-      </div>
-    </div>
+<header class="header" [class.fixed]="isFixed()" [class.open]="isNavOpen()">
+  <div class="container header__bar">
+    <a class="logo" href="#home" (click)="scrollTo('home', $event)">K &amp; M</a>
+
+    <button
+      class="hamburger-btn"
+      type="button"
+      aria-label="Menu"
+      aria-controls="site-nav"
+      [attr.aria-expanded]="isNavOpen()"
+      (click)="toggleNav()"
+    >
+      <span></span>
+    </button>
+
+    <nav class="nav" id="site-nav">
+      <ul>
+        @for (link of links; track link.id) {
+          <li>
+            <a [href]="'#' + link.id" (click)="scrollTo(link.id, $event)">{{ link.label }}</a>
+          </li>
+        }
+      </ul>
+    </nav>
   </div>
 </header>
