@@ -16,13 +16,13 @@ export const invitation = {
   rsvpDeadline: new Date('2027-01-02T23:59:59'),
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbzCjWR_KDG_kCHW76Mu0_xDKVOrWgEMhbi27Op7HrhsMar2sOtOj8Sib7RJXDK0lPLD7A/exec',
   photos: [
-    { src: 'assets/images/photos/placeholder-1.svg', alt: 'Pladsholder – foto 1' },
+    { src: 'assets/images/photos/kasper-barn.jpg', alt: 'Kasper som barn' },
     { src: 'assets/images/photos/placeholder-2.svg', alt: 'Pladsholder – foto 2' },
     { src: 'assets/images/photos/placeholder-3.svg', alt: 'Pladsholder – foto 3' },
   ],
   wishlists: [
-    { name: 'Kasper', initials: 'K', text: 'Hvis du vil forkæle mig', url: 'https://example.com/kasper' },
-    { name: 'Mette', initials: 'M', text: 'Hvis du vil forkæle mig', url: 'https://example.com/mette' },
-    { name: 'Fælles', initials: 'K&M', text: 'Til os begge', url: 'https://example.com/faelles' },
+    { name: 'Kasper', initials: 'K', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2gfa' },
+    { name: 'Mette', initials: 'M', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2f57' },
+    { name: 'Fælles', initials: 'K&M', text: 'Til os begge', url: 'https://onskeskyen.dk/s/eu2gpn' },
   ],
 } satisfies Invitation;
