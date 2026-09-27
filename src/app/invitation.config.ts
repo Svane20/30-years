@@ -8,8 +8,10 @@ export const invitation = {
   venue: {
     name: 'Årslev Forsamlingshus',
     address: 'Bystævnet 13, 5792 Årslev',
-    mapEmbedUrl: 'https://maps.google.com/maps?q=%C3%85rslev%20Forsamlingshus%2C%20Byst%C3%A6vnet%2013%2C%205792%20%C3%85rslev&z=16&output=embed',
-    mapsUrl: 'https://www.google.com/maps/place/%C3%85rslev+Forsamlingshus/@55.2977523,10.4533056,17z',
+    mapEmbedUrl:
+      'https://maps.google.com/maps?q=%C3%85rslev%20Forsamlingshus%2C%20Byst%C3%A6vnet%2013%2C%205792%20%C3%85rslev&z=16&output=embed',
+    mapsUrl:
+      'https://www.google.com/maps/place/%C3%85rslev+Forsamlingshus/@55.2977523,10.4533056,17z/data=!3m1!4b1!4m6!3m5!1s0x464d26b9bf6b3f11:0x3758869b7030f8b6!8m2!3d55.2977523!4d10.4533056!16s%2Fg%2F1thkvwh1?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D',
   },
   rsvpDeadline: new Date('2027-01-02T23:59:59'),
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbzCjWR_KDG_kCHW76Mu0_xDKVOrWgEMhbi27Op7HrhsMar2sOtOj8Sib7RJXDK0lPLD7A/exec',
