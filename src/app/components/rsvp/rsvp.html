@@ -3,7 +3,7 @@
     <h2 class="section-title">Kommer du?</h2>
 
     @if (state() === 'success') {
-      <div class="thanks" role="status">
+      <div class="thanks" role="status" tabindex="-1" #thanks>
         @if (submitted()?.attending) {
           <p class="thanks__title">Tak, {{ submitted()?.name }}! 🎉</p>
           <p>Vi glæder os til at se dig.</p>
@@ -63,8 +63,8 @@
         }
 
         <div class="hp" aria-hidden="true">
-          <label for="rsvp-website">Website</label>
-          <input id="rsvp-website" type="text" formControlName="website" tabindex="-1" autocomplete="off" />
+          <label for="rsvp-hp">Lad dette felt være tomt</label>
+          <input id="rsvp-hp" type="text" formControlName="website" tabindex="-1" autocomplete="off" />
         </div>
 
         @if (state() === 'error') {

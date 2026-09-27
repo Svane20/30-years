@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, Injector, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { invitation } from '../../invitation.config';
@@ -18,6 +18,8 @@ const notBlank: ValidatorFn = control => (typeof control.value === 'string' && c
 })
 export class Rsvp {
   private readonly rsvp = inject(RsvpService);
+  private readonly injector = inject(Injector);
+  private readonly thanks = viewChild<ElementRef<HTMLElement>>('thanks');
   private readonly submitAttempted = signal(false);
 
   protected readonly deadline = invitation.rsvpDeadline;
@@ -98,5 +100,7 @@ export class Rsvp {
   private succeed(response: RsvpResponse): void {
     this.submitted.set({ name: response.name, attending: response.attending });
     this.state.set('success');
+    // The focused submit button is removed with the form; move focus so screen readers announce the thanks.
+    afterNextRender(() => this.thanks()?.nativeElement.focus(), { injector: this.injector });
   }
 }

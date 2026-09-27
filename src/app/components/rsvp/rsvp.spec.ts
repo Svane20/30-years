@@ -131,6 +131,24 @@ describe('Rsvp', () => {
     expect(text()).toContain('Vi glæder os til at se dig.');
   });
 
+  it('moves focus to the thank-you message so screen readers announce it', async () => {
+    type('#rsvp-name', 'Anna');
+    clickButton('Ja, jeg kommer');
+    await submitForm();
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(query('.thanks'));
+  });
+
+  it('keeps the honeypot free of labels that browsers autofill', () => {
+    const honeypot = query<HTMLInputElement>('.hp input')!;
+    const label = query('.hp label')!;
+    const hints = [honeypot.id, honeypot.name, honeypot.getAttribute('autocomplete') ?? '', label.textContent ?? ''].join(' ').toLowerCase();
+    for (const word of ['website', 'url', 'email', 'mail', 'phone', 'name', 'address']) {
+      expect(hints).not.toContain(word);
+    }
+    expect(honeypot.getAttribute('autocomplete')).toBe('off');
+  });
+
   it('answers a declining guest kindly', async () => {
     type('#rsvp-name', 'Anna');
     clickButton('Desværre ikke');
