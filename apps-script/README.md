@@ -34,6 +34,7 @@ Creating a *new deployment* instead gives a new URL, which you would then have t
 Each guest has one row. Names must be a first and last name, and a name that is already on the list
 (ignoring case and extra spaces) is refused; the site then offers the guest **"Opdater mit svar"**, which
 replaces their existing row and refreshes its **Tidspunkt**.
+The total head count is `=SUMIF(C:C;"Ja";D:D)`.
 
 ## Testing the script
 
@@ -42,4 +43,3 @@ node --test apps-script/rsvp.test.mjs
 ```
 
 Runs the script against an in-memory sheet (also run in CI).
-The total head count is `=SUMIF(C:C;"Ja";D:D)`.
