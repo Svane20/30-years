@@ -6,11 +6,10 @@
   (pointerup)="onPointerUp($event)"
   (pointercancel)="onPointerCancel()"
 >
-  @for (photoIndex of state().slots; track $index; let slot = $index) {
+  <!-- Tracked by photo: a new photo creates a new polaroid (which fades in); photos that only change slot glide there. -->
+  @for (photoIndex of state().slots; track photoIndex; let slot = $index) {
     <figure class="polaroid polaroid--{{ slot }}">
-      @for (i of [photoIndex]; track i) {
-        <img [src]="invitation.photos[i].src" [alt]="invitation.photos[i].alt" draggable="false" />
-      }
+      <img [src]="invitation.photos[photoIndex].src" [alt]="invitation.photos[photoIndex].alt" draggable="false" />
     </figure>
   }
 
