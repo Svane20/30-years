@@ -1,59 +1,37 @@
-# 30Years
+# Kasper & Mette 30 år
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.0.
+The invitation site for our joint 30th birthday: photos, party details with a countdown, a map, wish lists and an RSVP form.
 
-## Development server
+Live: https://svane20.github.io/30-years/
 
-To start a local development server, run:
+## Filling in the details
 
-```bash
-ng serve
-```
+All content lives in **`src/app/invitation.config.ts`**:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Field | What to put there |
+|---|---|
+| `date` | Party start, e.g. `new Date('2027-01-23T11:00:00')` |
+| `venue` | Name, address, Google Maps embed URL and a google.com Maps link |
+| `rsvpDeadline` | Last day to answer |
+| `rsvpEndpoint` | The Apps Script URL – see [`apps-script/README.md`](apps-script/README.md) |
+| `photos` | At least 3 entries; put the files in `public/assets/images/photos/` |
+| `wishlists` | Exactly 3 entries: Kasper, Mette, Fælles |
 
-## Code scaffolding
+**Photos:** use JPGs about 800px on the long edge and under about 200 kB each, in portrait orientation (5:6 fits the polaroids best).
+Delete the `placeholder-*.svg` files once the real photos are in.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Run `pnpm ng test --watch=false` after editing. The config tests catch missing photos, the wrong number of wish lists and invalid dates.
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Development
 
 ```bash
-ng build
+pnpm install
+pnpm start                  # http://localhost:4200
+pnpm ng test --watch=false  # unit tests (Vitest)
+pnpm build                  # production build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Deployment
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Every push to `master` runs the tests and deploys to GitHub Pages (`.github/workflows/deploy.yml`).
+One-time setup: in the GitHub repo, go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
