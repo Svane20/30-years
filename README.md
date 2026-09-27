@@ -14,13 +14,14 @@ All content lives in **`src/app/invitation.config.ts`**:
 | `venue` | Name, address, Google Maps embed URL and a google.com Maps link |
 | `rsvpDeadline` | Last day to answer |
 | `rsvpEndpoint` | The Apps Script URL – see [`apps-script/README.md`](apps-script/README.md) |
-| `photos` | At least 3 entries; put the files in `public/assets/images/photos/` |
+| `slides` | Exactly 3 slides, each with a `kasper`, `mette` and `together` photo; put the files in `public/assets/images/photos/` |
 | `wishlists` | Exactly 3 entries: Kasper, Mette, Fælles |
 
 **Photos:** use JPGs about 800px on the long edge and under about 200 kB each, in portrait orientation (5:6 fits the polaroids best).
-Delete the `placeholder-*.svg` files once the real photos are in.
+The slideshow shows one slide at a time (Kasper left, Mette right, together bottom centre) and changes every 5 seconds.
+Delete the `placeholder-*.svg` files once all 9 real photos are in.
 
-Run `pnpm ng test --watch=false` after editing. The config tests catch missing photos, the wrong number of wish lists and invalid dates.
+Run `pnpm ng test --watch=false` after editing. The config tests catch a missing photo, a repeated photo, the wrong number of slides or wish lists, and invalid dates.
 
 ## Development
 

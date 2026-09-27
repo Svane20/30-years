@@ -1,6 +1,6 @@
 import { Invitation } from './invitation.model';
 
-// Venue, date, start time, deadline and RSVP endpoint are real; photos and wish lists are placeholders –
+// Venue, date, start time, deadline, RSVP endpoint and wish lists are real; most photos are placeholders –
 // replace them before sharing the link.
 export const invitation = {
   names: 'Kasper & Mette',
@@ -15,10 +15,22 @@ export const invitation = {
   },
   rsvpDeadline: new Date('2027-01-02T23:59:59'),
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbzCjWR_KDG_kCHW76Mu0_xDKVOrWgEMhbi27Op7HrhsMar2sOtOj8Sib7RJXDK0lPLD7A/exec',
-  photos: [
-    { src: 'assets/images/photos/kasper-barn.jpg', alt: 'Kasper som barn' },
-    { src: 'assets/images/photos/placeholder-2.svg', alt: 'Pladsholder – foto 2' },
-    { src: 'assets/images/photos/placeholder-3.svg', alt: 'Pladsholder – foto 3' },
+  slides: [
+    {
+      kasper: { src: 'assets/images/photos/kasper-barn.jpg', alt: 'Kasper som barn' },
+      mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
+      together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+    },
+    {
+      kasper: { src: 'assets/images/photos/placeholder-kasper.svg', alt: 'Pladsholder – Kasper' },
+      mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
+      together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+    },
+    {
+      kasper: { src: 'assets/images/photos/placeholder-kasper.svg', alt: 'Pladsholder – Kasper' },
+      mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
+      together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+    },
   ],
   wishlists: [
     { name: 'Kasper', initials: 'K', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2gfa' },

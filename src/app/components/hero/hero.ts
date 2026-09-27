@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { invitation } from '../../invitation.config';
-import { advanceSlideshow, initialSlideshow } from './slideshow';
+import { Slide } from '../../invitation.model';
 
-export const SLIDE_INTERVAL_MS = 4000;
+export const SLIDE_INTERVAL_MS = 5000;
 const TAP_MAX_PX = 10;
 const SWIPE_MIN_PX = 40;
 
@@ -18,13 +18,16 @@ function prefersReducedMotion(): boolean {
 })
 export class Hero {
   protected readonly invitation = invitation;
+  /** Polaroid slots in on-screen order: left, right, bottom centre. */
+  protected readonly roles: (keyof Slide)[] = ['kasper', 'mette', 'together'];
 
   private readonly document = inject(DOCUMENT);
   private readonly reducedMotion = prefersReducedMotion();
   private timerId: ReturnType<typeof setInterval> | null = null;
   private pointerStartX: number | null = null;
 
-  public readonly state = signal(initialSlideshow(invitation.photos.length));
+  /** Index of the slide on screen. */
+  public readonly current = signal(0);
 
   constructor() {
     const onVisibilityChange = () => (this.document.hidden ? this.stopTimer() : this.startTimer());
@@ -39,8 +42,7 @@ export class Hero {
   }
 
   public next(): void {
-    this.state.update(state => advanceSlideshow(state, invitation.photos.length));
-    this.preload(this.state().nextPhoto);
+    this.current.update(index => (index + 1) % invitation.slides.length);
   }
 
   public onPointerDown(event: PointerEvent): void {
@@ -80,10 +82,5 @@ export class Hero {
       clearInterval(this.timerId);
       this.timerId = null;
     }
-  }
-
-  private preload(photoIndex: number): void {
-    const image = new Image();
-    image.src = invitation.photos[photoIndex].src;
   }
 }

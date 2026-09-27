@@ -21,25 +21,27 @@
   background: var(--polaroid);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
   transform: rotate(var(--tilt));
-  animation: fade-in 800ms ease both;
-  transition:
-    left 800ms ease,
-    right 800ms ease,
-    top 800ms ease,
-    bottom 800ms ease,
-    width 800ms ease,
-    transform 800ms ease;
 
+  // All slides' photos sit on top of each other inside the frame; only the current one is opaque.
   img {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 8px 8px 28px;
+    width: calc(100% - 16px);
+    height: calc(100% - 36px);
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 800ms ease var(--ripple, 0ms);
+  }
+
+  img.active {
+    opacity: 1;
   }
 }
 
 .polaroid--0 {
   --w: 44vw;
   --tilt: -9deg;
+  --ripple: 0ms;
   left: 4%;
   top: 13%;
 }
@@ -47,6 +49,7 @@
 .polaroid--1 {
   --w: 40vw;
   --tilt: 8deg;
+  --ripple: 150ms;
   right: 4%;
   top: 24%;
 }
@@ -54,6 +57,7 @@
 .polaroid--2 {
   --w: 38vw;
   --tilt: -3deg;
+  --ripple: 300ms;
   left: 31%;
   bottom: 7%;
 }
@@ -104,18 +108,8 @@
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .polaroid {
-    animation: none;
+  .polaroid img {
     transition: none;
   }
 }

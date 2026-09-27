@@ -11,12 +11,20 @@ describe('invitation config', () => {
     }
   });
 
-  it('has at least three photos, each with a src and alt text', () => {
-    expect(invitation.photos.length).toBeGreaterThanOrEqual(3);
-    for (const photo of invitation.photos) {
-      expect(photo.src.startsWith('assets/images/photos/')).toBe(true);
-      expect(photo.alt.trim()).not.toBe('');
+  it('has three slides, each with a photo of Kasper, of Mette and of them together', () => {
+    expect(invitation.slides).toHaveLength(3);
+    for (const slide of invitation.slides) {
+      expect(Object.keys(slide).sort()).toEqual(['kasper', 'mette', 'together']);
+      for (const photo of [slide.kasper, slide.mette, slide.together]) {
+        expect(photo.src.startsWith('assets/images/photos/')).toBe(true);
+        expect(photo.alt.trim()).not.toBe('');
+      }
     }
+  });
+
+  it('never repeats a photo', () => {
+    const srcs = invitation.slides.flatMap(s => [s.kasper.src, s.mette.src, s.together.src]).filter(src => !src.includes('placeholder'));
+    expect(new Set(srcs).size).toBe(srcs.length);
   });
 
   it('has a valid party date', () => {

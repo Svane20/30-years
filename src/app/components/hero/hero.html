@@ -6,10 +6,18 @@
   (pointerup)="onPointerUp($event)"
   (pointercancel)="onPointerCancel()"
 >
-  <!-- Tracked by photo: a new photo creates a new polaroid (which fades in); photos that only change slot glide there. -->
-  @for (photoIndex of state().slots; track photoIndex; let slot = $index) {
+  <!-- Each polaroid stacks its person's photo from every slide; the current one fades in, rippling slot by slot. -->
+  @for (role of roles; track role; let slot = $index) {
     <figure class="polaroid polaroid--{{ slot }}">
-      <img [src]="invitation.photos[photoIndex].src" [alt]="invitation.photos[photoIndex].alt" draggable="false" />
+      @for (slide of invitation.slides; track $index; let i = $index) {
+        <img
+          [src]="slide[role].src"
+          [alt]="slide[role].alt"
+          [class.active]="i === current()"
+          [attr.aria-hidden]="i !== current()"
+          draggable="false"
+        />
+      }
     </figure>
   }
 
@@ -19,8 +27,8 @@
   </div>
 
   <div class="hero__dots" aria-hidden="true">
-    @for (photo of invitation.photos; track photo.src) {
-      <span [class.active]="$index === state().current"></span>
+    @for (slide of invitation.slides; track $index) {
+      <span [class.active]="$index === current()"></span>
     }
   </div>
 </section>

@@ -13,6 +13,13 @@ export interface Photo {
   alt: string;
 }
 
+/** One slideshow slide: a polaroid of each, shown together. */
+export interface Slide {
+  kasper: Photo;
+  mette: Photo;
+  together: Photo;
+}
+
 export interface Wishlist {
   name: string;
   /** Shown in the round avatar, e.g. 'K' or 'K&M'. */
@@ -29,8 +36,8 @@ export interface Invitation {
   rsvpDeadline: Date;
   /** Google Apps Script web app URL; empty until deployed. */
   rsvpEndpoint: string;
-  /** At least three. */
-  photos: Photo[];
+  /** Exactly three. */
+  slides: Slide[];
   /** Exactly three: Kasper, Mette, Fælles. */
   wishlists: Wishlist[];
 }
