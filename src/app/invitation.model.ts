@@ -23,9 +23,8 @@ export interface Wishlist {
 
 export interface Invitation {
   names: string;
-  /** Party start in local time. */
+  /** Party start in local time. There is no end time. */
   date: Date;
-  endTime: string;
   venue: Venue;
   rsvpDeadline: Date;
   /** Google Apps Script web app URL; empty until deployed. */

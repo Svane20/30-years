@@ -1,11 +1,10 @@
 import { Invitation } from './invitation.model';
 
-// Venue and date are real; start time, deadline, endpoint, photos and wish lists are placeholders –
+// Venue, date and start time are real; deadline, endpoint, photos and wish lists are placeholders –
 // replace them before sharing the link.
 export const invitation = {
   names: 'Kasper & Mette',
-  date: new Date('2027-01-23T18:00:00'),
-  endTime: 'til sent',
+  date: new Date('2027-01-23T11:00:00'),
   venue: {
     name: 'Årslev Forsamlingshus',
     address: 'Bystævnet 13, 5792 Årslev',

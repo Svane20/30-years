@@ -26,8 +26,13 @@ describe('InvitationDetails', () => {
     const text = el.textContent ?? '';
     expect(text).toContain(formatDate(invitation.date, 'EEEE', 'da-DK'));
     expect(text).toContain(formatDate(invitation.date, 'd. MMMM', 'da-DK'));
-    expect(text).toContain(`${formatDate(invitation.date, 'HH:mm', 'da-DK')} · ${invitation.endTime}`);
     expect(text).toContain(invitation.venue.name);
+  });
+
+  it('shows only the start time, since the party has no end time', () => {
+    create(new Date(invitation.date.getTime() - ONE_DAY_2H_3M_4S));
+    const time = Array.from(el.querySelectorAll('.facts div')).find(d => d.querySelector('dt')?.textContent?.trim() === 'Tid');
+    expect(time?.querySelector('dd')?.textContent?.trim()).toBe(formatDate(invitation.date, 'HH:mm', 'da-DK'));
   });
 
   it('shows a live countdown with padded hours, minutes and seconds', () => {
