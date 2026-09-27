@@ -1,0 +1,61 @@
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 32px;
+  margin-bottom: 36px;
+
+  dt {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  dd {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  div {
+    width: 76px;
+    padding: 10px 0;
+    border: 1px solid var(--gold-line);
+    border-radius: 14px;
+    background: var(--navy);
+    font-size: 0.75rem;
+  }
+
+  b {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.8rem;
+    line-height: 1.2;
+    color: var(--gold);
+  }
+}
+
+.today {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  color: var(--gold);
+}
+
+@media (min-width: 860px) {
+  .countdown div {
+    width: 100px;
+  }
+
+  .countdown b {
+    font-size: 2.4rem;
+  }
+}

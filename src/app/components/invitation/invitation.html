@@ -1,0 +1,31 @@
+<section class="section section--alt" id="info">
+  <div class="container">
+    <h2 class="section-title">Kom og fejr os</h2>
+
+    <dl class="facts">
+      <div>
+        <dt>{{ invitation.date | date: 'EEEE' }}</dt>
+        <dd>{{ invitation.date | date: 'd. MMMM' }}</dd>
+      </div>
+      <div>
+        <dt>Tid</dt>
+        <dd>{{ invitation.date | date: 'HH:mm' }} · {{ invitation.endTime }}</dd>
+      </div>
+      <div>
+        <dt>Sted</dt>
+        <dd>{{ invitation.venue.name }}</dd>
+      </div>
+    </dl>
+
+    @if (remaining().isToday) {
+      <p class="today">I dag er dagen! 🎉</p>
+    } @else {
+      <div class="countdown" role="timer">
+        <div><b>{{ remaining().days }}</b>dage</div>
+        <div><b>{{ pad(remaining().hours) }}</b>timer</div>
+        <div><b>{{ pad(remaining().minutes) }}</b>min</div>
+        <div><b>{{ pad(remaining().seconds) }}</b>sek</div>
+      </div>
+    }
+  </div>
+</section>
