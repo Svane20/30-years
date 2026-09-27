@@ -21,6 +21,11 @@ describe('InvitationDetails', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
+  it('invites to brunch', () => {
+    create(new Date(invitation.date.getTime() - ONE_DAY_2H_3M_4S));
+    expect(el.querySelector('h2')?.textContent?.trim()).toBe('Kom til brunch');
+  });
+
   it('shows the weekday, date, time and venue in Danish', () => {
     create(new Date(invitation.date.getTime() - ONE_DAY_2H_3M_4S));
     const text = el.textContent ?? '';
