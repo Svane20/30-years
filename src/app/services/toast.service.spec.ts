@@ -29,6 +29,20 @@ describe('ToastService', () => {
     expect(service.current()).toBeNull();
   });
 
+  it('keeps a notification with a button until it is used or closed', () => {
+    service.show({ kind: 'warning', title: 'Anna er allerede på listen', message: '', action: { label: 'Opdater mit svar', run: () => {} } });
+    vi.advanceTimersByTime(TOAST_DURATION_MS * 5);
+    expect(service.current()?.title).toBe('Anna er allerede på listen');
+  });
+
+  it('runs the button’s action and closes the notification', () => {
+    const run = vi.fn<() => void>();
+    service.show({ kind: 'warning', title: 'Anna', message: '', action: { label: 'Opdater mit svar', run } });
+    service.runAction();
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(service.current()).toBeNull();
+  });
+
   it('can be closed by hand', () => {
     service.show({ kind: 'error', title: 'Fejl', message: '' });
     service.dismiss();

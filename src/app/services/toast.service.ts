@@ -1,9 +1,11 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 
 export interface Toast {
-  kind: 'success' | 'error';
+  kind: 'success' | 'warning' | 'error';
   title: string;
   message: string;
+  /** Optional button. A toast with a button stays until it is used or closed. */
+  action?: { label: string; run: () => void };
 }
 
 export const TOAST_DURATION_MS = 6000;
@@ -23,7 +25,15 @@ export class ToastService {
   public show(toast: Toast): void {
     this.clearTimer();
     this.state.set(toast);
-    this.timerId = setTimeout(() => this.dismiss(), TOAST_DURATION_MS);
+    if (!toast.action) {
+      this.timerId = setTimeout(() => this.dismiss(), TOAST_DURATION_MS);
+    }
+  }
+
+  public runAction(): void {
+    const action = this.state()?.action;
+    this.dismiss();
+    action?.run();
   }
 
   public dismiss(): void {

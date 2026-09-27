@@ -39,6 +39,26 @@ describe('ToastBar', () => {
     expect(toast.getAttribute('role')).toBe('alert');
   });
 
+  it('shows a warning with an action button that runs the action', () => {
+    const run = vi.fn<() => void>();
+    toasts.show({ kind: 'warning', title: 'Anna Hansen er allerede på listen', message: 'Hvis det er dig…', action: { label: 'Opdater mit svar', run } });
+    fixture.detectChanges();
+    const toast = el.querySelector('.toast')!;
+    expect(toast.classList).toContain('toast--warning');
+    expect(toast.getAttribute('role')).toBe('status');
+    const button = toast.querySelector<HTMLButtonElement>('.toast__action')!;
+    expect(button.textContent?.trim()).toBe('Opdater mit svar');
+    button.click();
+    fixture.detectChanges();
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(el.querySelector('.toast')).toBeNull();
+  });
+
+  it('has no action button when there is no action', () => {
+    show('success');
+    expect(el.querySelector('.toast__action')).toBeNull();
+  });
+
   it('closes from its close button', () => {
     show('success');
     const close = el.querySelector<HTMLButtonElement>('.toast__close')!;

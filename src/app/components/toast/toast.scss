@@ -24,6 +24,18 @@
   --accent: var(--error);
 }
 
+.toast__action {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
 .toast__icon {
   flex: none;
   display: grid;
