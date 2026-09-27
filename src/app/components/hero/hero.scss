@@ -38,20 +38,21 @@
   }
 }
 
+// The top two cards are anchored just below the header (not a %), so on every phone height they sit above the title card.
 .polaroid--0 {
-  --w: 44vw;
+  --w: 36vw;
   --tilt: -9deg;
   --ripple: 0ms;
   left: 4%;
-  top: 13%;
+  top: 72px;
 }
 
 .polaroid--1 {
-  --w: 40vw;
+  --w: 36vw;
   --tilt: 8deg;
   --ripple: 150ms;
   right: 4%;
-  top: 24%;
+  top: 72px;
 }
 
 .polaroid--2 {
