@@ -36,6 +36,13 @@ describe('slideshow', () => {
     expect(seen.size).toBe(photoCount);
   });
 
+  it('moves the current dot forward one photo at a time', () => {
+    for (const photoCount of [3, 4, 7]) {
+      const dots = run(photoCount, photoCount * 2).map(s => s.current);
+      dots.slice(1).forEach((dot, i) => expect(dot).toBe((dots[i] + 1) % photoCount));
+    }
+  });
+
   it('rotates the photos between slots when there are exactly three', () => {
     const [start, next] = run(3, 1);
     expect(next.slots).not.toEqual(start.slots);
