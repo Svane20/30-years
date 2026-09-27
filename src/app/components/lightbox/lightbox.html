@@ -1,0 +1,4 @@
+<div class="lightbox" role="dialog" aria-modal="true" [attr.aria-label]="photo().alt" (click)="onBackdropClick($event)">
+  <button #closeButton class="lightbox__close" type="button" aria-label="Luk" (click)="close()">&times;</button>
+  <img [src]="photo().full" [alt]="photo().alt" />
+</div>
