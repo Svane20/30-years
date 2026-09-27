@@ -24,5 +24,8 @@ jobs:
       - name: Test
         run: pnpm ng test --watch=false
 
+      - name: Test Apps Script
+        run: node --test apps-script/rsvp.test.mjs
+
       - name: Build
         run: pnpm build

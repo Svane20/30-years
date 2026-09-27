@@ -17,14 +17,25 @@ function doPost(e) {
       return json({ ok: false, error: error });
     }
 
-    getSheet().appendRow([
+    const sheet = getSheet();
+    const row = [
       new Date(),
-      safe(data.name.trim()),
+      safe(data.name.trim().replace(/\s+/g, ' ')),
       data.attending ? 'Ja' : 'Nej',
       data.attending ? data.count : 0,
       safe((data.message || '').trim()),
-    ]);
+    ];
 
+    const existing = findRow(sheet, data.name);
+    if (existing) {
+      if (!data.update) {
+        return json({ ok: false, error: 'duplicate' });
+      }
+      sheet.getRange(existing, 1, 1, row.length).setValues([row]);
+      return json({ ok: true, updated: true });
+    }
+
+    sheet.appendRow(row);
     return json({ ok: true });
   } catch (err) {
     return json({ ok: false, error: 'invalid request' });
@@ -39,12 +50,32 @@ function validate(data) {
 
   const name = data.name.trim();
   if (name.length < 1 || name.length > 100) return 'invalid name';
+  if (name.split(/\s+/).length < 2) return 'full name required';
   if (typeof data.attending !== 'boolean') return 'invalid attending';
   if (!Number.isInteger(data.count) || data.count < 0 || data.count > 10) return 'invalid count';
   if (data.attending && data.count < 1) return 'invalid count';
   if (data.message != null && (typeof data.message !== 'string' || data.message.length > 500)) return 'invalid message';
 
   return null;
+}
+
+/** Names match regardless of case and extra spaces: "anna  HANSEN" is "Anna Hansen". */
+function normalize(name) {
+  return String(name).trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/** Sheet row number (1-based) of an existing answer with this name, or 0. */
+function findRow(sheet, name) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return 0;
+
+  const wanted = normalize(name);
+  const names = sheet.getRange(2, 2, lastRow - 1, 1).getValues();
+  for (let i = 0; i < names.length; i++) {
+    // Stored names may carry the formula-escape quote; compare without it.
+    if (normalize(String(names[i][0]).replace(/^'/, '')) === wanted) return i + 2;
+  }
+  return 0;
 }
 
 /** Prevent spreadsheet formula injection from guest input. */
