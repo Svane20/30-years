@@ -3,13 +3,22 @@ import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { invitation } from '../../invitation.config';
-import { RsvpResponse, RsvpService } from '../../services/rsvp.service';
+import { DuplicateNameError, RsvpResponse, RsvpService } from '../../services/rsvp.service';
 import { ToastService } from '../../services/toast.service';
 
 type RsvpState = 'idle' | 'sending';
 type Field = 'name' | 'attending' | 'count' | 'message';
 
 const notBlank: ValidatorFn = control => (typeof control.value === 'string' && control.value.trim() !== '' ? null : { required: true });
+
+/** First and last name, so two guests called Kasper don't end up as the same row. */
+const fullName: ValidatorFn = control =>
+  typeof control.value === 'string' && control.value.trim().split(/\s+/).length < 2 && control.value.trim() !== ''
+    ? { fullName: true }
+    : null;
+
+const tidyName = (name: string) => name.trim().replace(/\s+/g, ' ');
+const firstName = (name: string) => name.split(' ')[0];
 
 @Component({
   imports: [ReactiveFormsModule, DatePipe],
@@ -27,7 +36,7 @@ export class Rsvp {
   public readonly state = signal<RsvpState>('idle');
 
   public readonly form = new FormGroup({
-    name: new FormControl('', { nonNullable: true, validators: [notBlank, Validators.maxLength(100)] }),
+    name: new FormControl('', { nonNullable: true, validators: [notBlank, fullName, Validators.maxLength(100)] }),
     attending: new FormControl<boolean | null>(null, Validators.required),
     count: new FormControl(1, {
       nonNullable: true,
@@ -72,37 +81,53 @@ export class Rsvp {
 
     const { name, attending, count, message, website } = this.form.getRawValue();
     const isAttending = attending === true;
-    const response: RsvpResponse = { name: name.trim(), attending: isAttending, count: isAttending ? count : 0, message: message.trim() };
+    const response: RsvpResponse = {
+      name: tidyName(name),
+      attending: isAttending,
+      count: isAttending ? count : 0,
+      message: message.trim(),
+    };
 
     if (website) {
-      this.succeed(response);
+      this.succeed(response, false);
       return;
     }
 
+    await this.send(response, false);
+  }
+
+  private async send(response: RsvpResponse, update: boolean): Promise<void> {
     this.state.set('sending');
 
     try {
-      await this.rsvp.submit(response);
-      this.succeed(response);
-    } catch {
-      // Keep what the guest typed so they can simply press send again.
-      this.toasts.show({ kind: 'error', title: 'Dit svar blev ikke sendt.', message: 'Prøv igen om lidt, eller skriv til os på SMS.' });
+      const result = await (update ? this.rsvp.submit(response, { update: true }) : this.rsvp.submit(response));
+      this.succeed(response, result.updated);
+    } catch (error) {
+      // In both cases keep what the guest typed, so they can correct it or simply press send again.
+      if (error instanceof DuplicateNameError) {
+        this.toasts.show({
+          kind: 'warning',
+          title: `${response.name} er allerede på listen`,
+          message: 'Hvis det er dig, kan du opdatere dit svar. Ellers skriv venligst dit fulde navn, fx med mellemnavn.',
+          action: { label: 'Opdater mit svar', run: () => void this.send(response, true) },
+        });
+      } else {
+        this.toasts.show({ kind: 'error', title: 'Dit svar blev ikke sendt.', message: 'Prøv igen om lidt, eller skriv til os på SMS.' });
+      }
     } finally {
       this.state.set('idle');
     }
   }
 
-  /** Thank the guest in a notification and clear the form for the next person. */
-  private succeed(response: RsvpResponse): void {
-    this.toasts.show(
-      response.attending
-        ? { kind: 'success', title: `Tak, ${response.name}! 🎉`, message: 'Vi glæder os til at se dig til brunch.' }
-        : {
-            kind: 'success',
-            title: `Tak for dit svar, ${response.name}.`,
-            message: 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!',
-          },
-    );
+  /** Thank the guest (by first name) in a notification and clear the form for the next person. */
+  private succeed(response: RsvpResponse, updated: boolean): void {
+    const name = firstName(response.name);
+    const message = response.attending
+      ? 'Vi glæder os til at se dig til brunch.'
+      : 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!';
+    const title = updated ? `Dit svar er opdateret, ${name}.` : response.attending ? `Tak, ${name}! 🎉` : `Tak for dit svar, ${name}.`;
+
+    this.toasts.show({ kind: 'success', title, message });
     this.form.reset();
     this.submitAttempted.set(false);
   }

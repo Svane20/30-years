@@ -5,10 +5,12 @@
     <p>Svar venligst senest {{ deadline | date: 'd. MMMM' }}</p>
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label for="rsvp-name">Navn</label>
+      <label for="rsvp-name">Fulde navn</label>
       <input id="rsvp-name" type="text" formControlName="name" autocomplete="name" maxlength="100" />
       @if (showError('name')) {
-      <p class="error">Skriv venligst dit navn</p>
+        <p class="error">
+          {{ form.controls.name.hasError('fullName') ? 'Skriv venligst dit fulde navn (fornavn og efternavn)' : 'Skriv venligst dit navn' }}
+        </p>
       }
 
       <fieldset>
