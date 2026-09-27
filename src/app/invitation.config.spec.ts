@@ -17,6 +17,7 @@ describe('invitation config', () => {
       expect(Object.keys(slide).sort()).toEqual(['kasper', 'mette', 'together']);
       for (const photo of [slide.kasper, slide.mette, slide.together]) {
         expect(photo.src.startsWith('assets/images/photos/')).toBe(true);
+        expect(photo.full.startsWith('assets/images/photos/')).toBe(true);
         expect(photo.alt.trim()).not.toBe('');
       }
     }

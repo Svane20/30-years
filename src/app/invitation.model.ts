@@ -8,8 +8,10 @@ export interface Venue {
 }
 
 export interface Photo {
-  /** Path under public/, e.g. 'assets/images/photos/1.jpg'. */
+  /** Polaroid-sized (5:6 crop, ~800×960) path under public/, e.g. 'assets/images/photos/1.jpg'. */
   src: string;
+  /** Whole photo for the full-screen view, long edge ≤ 1600px. */
+  full: string;
   alt: string;
 }
 

@@ -17,19 +17,19 @@ export const invitation = {
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbzCjWR_KDG_kCHW76Mu0_xDKVOrWgEMhbi27Op7HrhsMar2sOtOj8Sib7RJXDK0lPLD7A/exec',
   slides: [
     {
-      kasper: { src: 'assets/images/photos/kasper-barn.jpg', alt: 'Kasper som barn' },
-      mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
-      together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+      kasper: { src: 'assets/images/photos/kasper-barn.jpg', full: 'assets/images/photos/kasper-barn.jpg', alt: 'Kasper som barn' },
+      mette: { src: 'assets/images/photos/placeholder-mette.svg', full: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
+      together: { src: 'assets/images/photos/placeholder-sammen.svg', full: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
     },
     {
-      kasper: { src: 'assets/images/photos/kasper-cycling.jpg', alt: 'Kasper med sin racercykel på toppen af Mont Ventoux' },
-      mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
-      together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+      kasper: { src: 'assets/images/photos/kasper-cycling.jpg', full: 'assets/images/photos/kasper-cycling-full.jpg', alt: 'Kasper med sin racercykel på toppen af Mont Ventoux' },
+      mette: { src: 'assets/images/photos/placeholder-mette.svg', full: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
+      together: { src: 'assets/images/photos/placeholder-sammen.svg', full: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
     },
     {
-      kasper: { src: 'assets/images/photos/kasper-parachuting.jpg', alt: 'Kasper i frit fald under et faldskærmsudspring' },
-      mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
-      together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+      kasper: { src: 'assets/images/photos/kasper-parachuting.jpg', full: 'assets/images/photos/kasper-parachuting-full.jpg', alt: 'Kasper i frit fald under et faldskærmsudspring' },
+      mette: { src: 'assets/images/photos/placeholder-mette.svg', full: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
+      together: { src: 'assets/images/photos/placeholder-sammen.svg', full: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
     },
   ],
   wishlists: [
