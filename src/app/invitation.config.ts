@@ -22,12 +22,12 @@ export const invitation = {
       together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
     },
     {
-      kasper: { src: 'assets/images/photos/placeholder-kasper.svg', alt: 'Pladsholder – Kasper' },
+      kasper: { src: 'assets/images/photos/kasper-cycling.jpg', alt: 'Kasper med sin racercykel på toppen af Mont Ventoux' },
       mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
       together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
     },
     {
-      kasper: { src: 'assets/images/photos/placeholder-kasper.svg', alt: 'Pladsholder – Kasper' },
+      kasper: { src: 'assets/images/photos/kasper-parachuting.jpg', alt: 'Kasper i frit fald under et faldskærmsudspring' },
       mette: { src: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
       together: { src: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
     },

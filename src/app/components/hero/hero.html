@@ -6,13 +6,13 @@
   (pointerup)="onPointerUp($event)"
   (pointercancel)="onPointerCancel()"
 >
-  <!-- Each polaroid stacks its person's photo from every slide; the current one fades in, rippling slot by slot. -->
-  @for (role of roles; track role; let slot = $index) {
+  <!-- Each polaroid stacks its photo from every slide; the current one fades in, rippling slot by slot. -->
+  @for (slot of slots; track slot) {
     <figure class="polaroid polaroid--{{ slot }}">
       @for (slide of invitation.slides; track $index; let i = $index) {
         <img
-          [src]="slide[role].src"
-          [alt]="slide[role].alt"
+          [src]="slide[roleFor(slot, i)].src"
+          [alt]="slide[roleFor(slot, i)].alt"
           [class.active]="i === current()"
           [attr.aria-hidden]="i !== current()"
           draggable="false"

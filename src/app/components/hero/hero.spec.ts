@@ -21,7 +21,9 @@ describe('Hero', () => {
     return Array.from(section.querySelectorAll('.polaroid')).map(p => p.querySelector('img.active')?.getAttribute('src') ?? null);
   }
 
-  const srcs = (slide: Slide) => [slide.kasper.src, slide.mette.src, slide.together.src];
+  /** Expected photos per slot (left, right, bottom): Kasper and Mette swap sides every other slide. */
+  const srcs = (slide: Slide, index = invitation.slides.indexOf(slide)) =>
+    index % 2 === 0 ? [slide.kasper.src, slide.mette.src, slide.together.src] : [slide.mette.src, slide.kasper.src, slide.together.src];
 
   function pointer(type: 'pointerdown' | 'pointerup', clientX: number): void {
     section.dispatchEvent(new PointerEvent(type, { clientX, bubbles: true }));
@@ -60,6 +62,14 @@ describe('Hero', () => {
     vi.advanceTimersByTime(1);
     expect(fixture.componentInstance.current()).toBe(1);
     expect(shown()).toEqual(srcs(invitation.slides[1]));
+  });
+
+  it('swaps Kasper and Mette between left and right on every other slide', () => {
+    create();
+    const slide1 = invitation.slides[1];
+    expect(shown()).toEqual([invitation.slides[0].kasper.src, invitation.slides[0].mette.src, invitation.slides[0].together.src]);
+    vi.advanceTimersByTime(SLIDE_INTERVAL_MS);
+    expect(shown()).toEqual([slide1.mette.src, slide1.kasper.src, slide1.together.src]);
   });
 
   it('wraps around to the first slide after the last', () => {

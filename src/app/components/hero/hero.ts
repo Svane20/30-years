@@ -19,7 +19,7 @@ function prefersReducedMotion(): boolean {
 export class Hero {
   protected readonly invitation = invitation;
   /** Polaroid slots in on-screen order: left, right, bottom centre. */
-  protected readonly roles: (keyof Slide)[] = ['kasper', 'mette', 'together'];
+  protected readonly slots = [0, 1, 2];
 
   private readonly document = inject(DOCUMENT);
   private readonly reducedMotion = prefersReducedMotion();
@@ -39,6 +39,12 @@ export class Hero {
     });
 
     this.startTimer();
+  }
+
+  /** Who is in a slot on a given slide: Kasper and Mette swap sides every other slide; together stays at the bottom. */
+  protected roleFor(slot: number, slideIndex: number): keyof Slide {
+    const sides: (keyof Slide)[] = slideIndex % 2 === 0 ? ['kasper', 'mette'] : ['mette', 'kasper'];
+    return slot < 2 ? sides[slot] : 'together';
   }
 
   public next(): void {
