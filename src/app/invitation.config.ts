@@ -1,7 +1,5 @@
 import { Invitation } from './invitation.model';
 
-// Venue, date, start time, deadline, RSVP endpoint and wish lists are real; most photos are placeholders –
-// replace them before sharing the link.
 export const invitation = {
   names: 'Kasper & Mette',
   date: new Date('2027-01-23T11:00:00'),
@@ -18,23 +16,23 @@ export const invitation = {
   slides: [
     {
       kasper: { src: 'assets/images/photos/kasper-barn.jpg', full: 'assets/images/photos/kasper-barn.jpg', alt: 'Kasper som barn' },
-      mette: { src: 'assets/images/photos/placeholder-mette.svg', full: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
-      together: { src: 'assets/images/photos/placeholder-sammen.svg', full: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+      mette: { src: 'assets/images/photos/mette-baby.jpg', full: 'assets/images/photos/mette-baby-full.jpg', alt: 'Mette som baby i sofaen' },
+      together: { src: 'assets/images/photos/sammen-1.jpg', full: 'assets/images/photos/sammen-1-full.jpg', alt: 'Kasper og Mette kysser under en pyntet granbue ved et slot' },
     },
     {
       kasper: { src: 'assets/images/photos/kasper-cycling.jpg', full: 'assets/images/photos/kasper-cycling-full.jpg', alt: 'Kasper med sin racercykel på toppen af Mont Ventoux' },
-      mette: { src: 'assets/images/photos/placeholder-mette.svg', full: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
-      together: { src: 'assets/images/photos/placeholder-sammen.svg', full: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+      mette: { src: 'assets/images/photos/mette-barn.jpg', full: 'assets/images/photos/mette-barn-full.jpg', alt: 'Mette som barn, sort-hvidt portræt' },
+      together: { src: 'assets/images/photos/sammen-2.jpg', full: 'assets/images/photos/sammen-2-full.jpg', alt: 'Kasper og Mette smiler i en sort-hvid selfie' },
     },
     {
       kasper: { src: 'assets/images/photos/kasper-parachuting.jpg', full: 'assets/images/photos/kasper-parachuting-full.jpg', alt: 'Kasper i frit fald under et faldskærmsudspring' },
-      mette: { src: 'assets/images/photos/placeholder-mette.svg', full: 'assets/images/photos/placeholder-mette.svg', alt: 'Pladsholder – Mette' },
-      together: { src: 'assets/images/photos/placeholder-sammen.svg', full: 'assets/images/photos/placeholder-sammen.svg', alt: 'Pladsholder – Kasper og Mette' },
+      mette: { src: 'assets/images/photos/mette-fodselsdag.jpg', full: 'assets/images/photos/mette-fodselsdag-full.jpg', alt: 'Mette ved et middagsbord med et lille dannebrogsflag' },
+      together: { src: 'assets/images/photos/sammen-3.jpg', full: 'assets/images/photos/sammen-3-full.jpg', alt: 'Kasper og Mette i solnedgang ved en sø' },
     },
   ],
   wishlists: [
-    { name: 'Kasper', initials: 'K', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2gfa' },
-    { name: 'Mette', initials: 'M', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2f57' },
+    { name: 'Kasper', initials: 'K', text: 'Hvis du/I vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2gfa' },
+    { name: 'Mette', initials: 'M', text: 'Hvis du/I vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2f57' },
     { name: 'Fælles', initials: 'K&M', text: 'Til os begge', url: 'https://onskeskyen.dk/s/eu2gpn' },
   ],
 } satisfies Invitation;

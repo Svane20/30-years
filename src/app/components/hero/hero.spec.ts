@@ -152,6 +152,29 @@ describe('Hero', () => {
       expect(lightbox()?.querySelector('img')?.getAttribute('src')).toBe(invitation.slides[1].kasper.full);
     });
 
+    it('steps through every photo slide by slide, in on-screen order, starting from the tapped one', () => {
+      create();
+      vi.advanceTimersByTime(SLIDE_INTERVAL_MS); // slide 2
+      fixture.detectChanges();
+      tapPolaroid(2);
+      const full = () => lightbox()!.querySelector('img')!.getAttribute('src');
+      expect(full()).toBe(invitation.slides[1].together.full);
+      expect(lightbox()!.querySelector('.lightbox__counter')!.textContent!.trim()).toBe(`6 / ${slideCount * 3}`);
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+      fixture.detectChanges();
+      expect(full()).toBe(invitation.slides[2].kasper.full); // slide 3: Kasper left again
+      expect(fixture.componentInstance.current()).toBe(1);
+    });
+
+    it('wraps from the first photo back to the last one', () => {
+      create();
+      tapPolaroid(0);
+      lightbox()!.querySelector<HTMLButtonElement>('button.lightbox__prev')!.click();
+      fixture.detectChanges();
+      expect(lightbox()!.querySelector('img')!.getAttribute('src')).toBe(invitation.slides[slideCount - 1].together.full);
+    });
+
     it('labels each polaroid as a button that opens the photo', () => {
       create();
       expect(polaroid(0).getAttribute('aria-label')).toBe(`Vis billede i fuld skærm: ${invitation.slides[0].kasper.alt}`);

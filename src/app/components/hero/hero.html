@@ -39,6 +39,7 @@
 </section>
 
 <!-- Outside the section, so taps in the lightbox never reach the slideshow's tap-to-advance handler. -->
-@if (openPhoto(); as photo) {
-  <app-lightbox [photo]="photo" (closed)="close()" />
+@let start = openIndex();
+@if (start !== null) {
+  <app-lightbox [photos]="photos" [start]="start" (closed)="close()" />
 }

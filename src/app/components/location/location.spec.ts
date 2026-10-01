@@ -22,4 +22,17 @@ describe('LocationSection', () => {
     expect(link.getAttribute('target')).toBe('_blank');
     expect(link.getAttribute('rel')).toBe('noopener');
   });
+
+  it('explains where to park when the car park is full', () => {
+    const fixture = TestBed.createComponent(LocationSection);
+    fixture.detectChanges();
+    const parking = (fixture.nativeElement as HTMLElement).querySelector('.parking')!;
+
+    expect(parking.querySelector('h3')?.textContent?.trim()).toBe('Parkering');
+    expect(parking.querySelector('p br')).not.toBeNull();
+    expect(parking.querySelector('p')?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
+      'Der er et begrænset antal parkeringspladser ved Årslev Forsamlingshus. ' +
+        'Er der fyldt op, kan du/I i stedet parkere langs vejen.',
+    );
+  });
 });

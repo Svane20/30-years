@@ -123,8 +123,8 @@ export class Rsvp {
   private succeed(response: RsvpResponse, updated: boolean): void {
     const name = firstName(response.name);
     const message = response.attending
-      ? 'Vi glæder os til at se dig til brunch.'
-      : 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!';
+      ? 'Vi glæder os til at se dig/jer til brunch.'
+      : 'Ærgerligt, at du/I ikke kan komme – vi kommer til at savne dig/jer!';
     const title = updated ? `Dit svar er opdateret, ${name}.` : response.attending ? `Tak, ${name}! 🎉` : `Tak for dit svar, ${name}.`;
 
     this.toasts.show({ kind: 'success', title, message });
