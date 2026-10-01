@@ -22,6 +22,9 @@ The slideshow shows one slide at a time and changes every 5 seconds. Kasper and 
 Tapping a polaroid opens the photo full screen; each photo therefore has a `full` image too (the whole, uncropped photo, long edge ≤ 1600px).
 In full screen, the arrow buttons, the ← / → keys and swiping step through all 9 photos, slide by slide in on-screen order, wrapping at both ends.
 
+**Link preview:** the title, text and image shown when the link is shared (Messenger, SMS, WhatsApp) are the `og:` tags in `src/index.html`; keep them in sync with the config.
+The image is `public/og-image.jpg` (1200×630). Apps cache previews, so after a change share `…/30-years/?v=2` or press **Scrape Again** in the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/).
+
 Run `pnpm ng test --watch=false` after editing. The config tests catch a missing photo, a repeated photo, the wrong number of slides or wish lists, and invalid dates.
 
 ## Development
