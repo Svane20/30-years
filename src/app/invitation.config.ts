@@ -31,8 +31,8 @@ export const invitation = {
     },
   ],
   wishlists: [
-    { name: 'Kasper', initials: 'K', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2gfa' },
-    { name: 'Mette', initials: 'M', text: 'Hvis du vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2f57' },
+    { name: 'Kasper', initials: 'K', text: 'Hvis du/I vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2gfa' },
+    { name: 'Mette', initials: 'M', text: 'Hvis du/I vil forkæle mig', url: 'https://onskeskyen.dk/s/eu2f57' },
     { name: 'Fælles', initials: 'K&M', text: 'Til os begge', url: 'https://onskeskyen.dk/s/eu2gpn' },
   ],
 } satisfies Invitation;

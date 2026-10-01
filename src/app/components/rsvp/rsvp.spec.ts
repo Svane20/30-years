@@ -47,6 +47,12 @@ describe('Rsvp', () => {
     fixture.detectChanges();
   }
 
+  it('speaks to the whole household, answered by one person', () => {
+    expect(el.querySelector('h2')?.textContent?.trim()).toBe('Kommer du/I?');
+    expect(text()).toContain('Svar gerne samlet for hele husstanden.');
+    expect(el.querySelector('legend')?.textContent?.trim()).toBe('Deltager du/I?');
+  });
+
   it('shows the RSVP deadline', () => {
     expect(text()).toContain(`Svar venligst senest ${formatDate(invitation.rsvpDeadline, 'd. MMMM', 'da-DK')}`);
   });
@@ -77,7 +83,7 @@ describe('Rsvp', () => {
 
   it('only asks for the number of people when attending', () => {
     expect(query('#rsvp-count')).toBeNull();
-    clickButton('Ja, jeg kommer');
+    clickButton('Ja, jeg/vi deltager');
     expect(query('#rsvp-count')).not.toBeNull();
     clickButton('Desværre ikke');
     expect(query('#rsvp-count')).toBeNull();
@@ -85,7 +91,7 @@ describe('Rsvp', () => {
 
   it('rejects a people count outside 1–10 when attending', async () => {
     type('#rsvp-name', 'Anna Hansen');
-    clickButton('Ja, jeg kommer');
+    clickButton('Ja, jeg/vi deltager');
     type('#rsvp-count', '11');
     await submitForm();
     expect(text()).toContain('Vælg mellem 1 og 10 personer');
@@ -94,7 +100,7 @@ describe('Rsvp', () => {
 
   it('ignores an invalid count once the guest declines', async () => {
     type('#rsvp-name', 'Anna Hansen');
-    clickButton('Ja, jeg kommer');
+    clickButton('Ja, jeg/vi deltager');
     type('#rsvp-count', '');
     clickButton('Desværre ikke');
     await submitForm();
@@ -112,7 +118,7 @@ describe('Rsvp', () => {
 
   it('sends the trimmed values', async () => {
     type('#rsvp-name', '  Anna   Hansen  ');
-    clickButton('Ja, jeg kommer');
+    clickButton('Ja, jeg/vi deltager');
     type('#rsvp-count', '2');
     type('#rsvp-message', '  Glæder mig  ');
     await submitForm();
@@ -151,10 +157,10 @@ describe('Rsvp', () => {
 
   it('thanks an attending guest in a notification and clears the form', async () => {
     type('#rsvp-name', '  Anna Hansen ');
-    clickButton('Ja, jeg kommer');
+    clickButton('Ja, jeg/vi deltager');
     type('#rsvp-message', 'Glæder mig');
     await submitForm();
-    expect(toast()).toEqual({ kind: 'success', title: 'Tak, Anna! 🎉', message: 'Vi glæder os til at se dig til brunch.' });
+    expect(toast()).toEqual({ kind: 'success', title: 'Tak, Anna! 🎉', message: 'Vi glæder os til at se dig/jer til brunch.' });
     expect(query('form')).not.toBeNull();
     expect(formIsEmpty()).toBe(true);
     expect(query('#rsvp-count')).toBeNull();
@@ -168,7 +174,7 @@ describe('Rsvp', () => {
     expect(toast()).toEqual({
       kind: 'success',
       title: 'Tak for dit svar, Anna.',
-      message: 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!',
+      message: 'Ærgerligt, at du/I ikke kan komme – vi kommer til at savne dig/jer!',
     });
     expect(formIsEmpty()).toBe(true);
   });
@@ -214,7 +220,7 @@ describe('Rsvp', () => {
 
     async function sendDuplicate(attending: boolean): Promise<void> {
       type('#rsvp-name', 'Anna Hansen');
-      clickButton(attending ? 'Ja, jeg kommer' : 'Desværre ikke');
+      clickButton(attending ? 'Ja, jeg/vi deltager' : 'Desværre ikke');
       await submitForm();
     }
 
@@ -239,7 +245,7 @@ describe('Rsvp', () => {
       expect(toast()).toEqual({
         kind: 'success',
         title: 'Dit svar er opdateret, Anna.',
-        message: 'Ærgerligt, at du ikke kan komme – vi kommer til at savne dig!',
+        message: 'Ærgerligt, at du/I ikke kan komme – vi kommer til at savne dig/jer!',
       });
       expect(formIsEmpty()).toBe(true);
     });

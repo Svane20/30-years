@@ -7,7 +7,7 @@ describe('Footer', () => {
     const fixture = TestBed.createComponent(Footer);
     fixture.detectChanges();
     const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
-    expect(text).toContain('Vi glæder os til at se dig!');
+    expect(text).toContain('Vi glæder os til at se dig/jer!');
     expect(text).toContain(`K & M · ${invitation.date.getFullYear()}`);
   });
 });
