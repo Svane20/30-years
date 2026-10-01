@@ -33,11 +33,13 @@ export class Hero {
 
   /** Index of the slide on screen. */
   public readonly current = signal(0);
-  /** Photo shown full screen, or null when the lightbox is closed. */
-  public readonly openPhoto = signal<Photo | null>(null);
+  /** Every photo, slide by slide, in on-screen order: the lightbox steps through these. */
+  protected readonly photos: Photo[] = invitation.slides.flatMap((slide, i) => this.slots.map(slot => slide[this.roleFor(slot, i)]));
+  /** Index into `photos` shown full screen, or null when the lightbox is closed. */
+  public readonly openIndex = signal<number | null>(null);
 
   constructor() {
-    const onVisibilityChange = () => (this.document.hidden || this.openPhoto() ? this.stopTimer() : this.startTimer());
+    const onVisibilityChange = () => (this.document.hidden || this.openIndex() !== null ? this.stopTimer() : this.startTimer());
     this.document.addEventListener('visibilitychange', onVisibilityChange);
 
     inject(DestroyRef).onDestroy(() => {
@@ -68,12 +70,12 @@ export class Hero {
     }
 
     this.openedFrom = event.currentTarget as HTMLElement;
-    this.openPhoto.set(this.photoAt(slot));
+    this.openIndex.set(this.current() * this.slots.length + slot);
     this.stopTimer();
   }
 
   public close(): void {
-    this.openPhoto.set(null);
+    this.openIndex.set(null);
     this.openedFrom?.focus();
     this.openedFrom = null;
     this.startTimer();
@@ -111,7 +113,7 @@ export class Hero {
   }
 
   private startTimer(): void {
-    if (this.reducedMotion || this.timerId !== null || this.document.hidden || this.openPhoto()) {
+    if (this.reducedMotion || this.timerId !== null || this.document.hidden || this.openIndex() !== null) {
       return;
     }
 

@@ -1,4 +1,18 @@
-<div class="lightbox" role="dialog" aria-modal="true" [attr.aria-label]="photo().alt" (click)="onBackdropClick($event)">
+<div
+  class="lightbox"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="photo().alt"
+  (click)="onBackdropClick($event)"
+  (pointerdown)="onPointerDown($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerCancel()"
+>
   <button #closeButton class="lightbox__close" type="button" aria-label="Luk" (click)="close()">&times;</button>
-  <img [src]="photo().full" [alt]="photo().alt" />
+  <img [src]="photo().full" [alt]="photo().alt" draggable="false" />
+  <div class="lightbox__nav">
+    <button class="lightbox__prev" type="button" aria-label="Forrige billede" (click)="previous()">&lsaquo;</button>
+    <span class="lightbox__counter" aria-live="polite">{{ index() + 1 }} / {{ photos().length }}</span>
+    <button class="lightbox__next" type="button" aria-label="Næste billede" (click)="next()">&rsaquo;</button>
+  </div>
 </div>
