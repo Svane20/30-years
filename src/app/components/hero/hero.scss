@@ -9,7 +9,6 @@
   overflow: hidden;
   touch-action: pan-y;
   user-select: none;
-  cursor: pointer;
   background: radial-gradient(circle at 50% 40%, var(--navy-alt), var(--navy) 70%);
 }
 
@@ -24,6 +23,9 @@
   transform: rotate(var(--tilt));
   border: 0;
   cursor: zoom-in;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
 
   // All slides' photos sit on top of each other inside the frame; only the current one is opaque.
   img {
@@ -69,6 +71,80 @@
   --ripple: 300ms;
   left: calc(50% - var(--w) / 2);
   bottom: 7%;
+}
+
+// "Tryk for at se" written on the white strip, so phones (no hover, no zoom cursor) learn the photos open.
+.polaroid__hint {
+  position: absolute;
+  right: 9px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--navy);
+  opacity: 0.6;
+  transition: opacity 200ms ease;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+// Desktop: the card straightens a little and lifts towards the viewer.
+@media (hover: hover) {
+  .polaroid:hover,
+  .polaroid:focus-visible {
+    z-index: 2;
+    transform: rotate(calc(var(--tilt) * 0.5)) translateY(-6px) scale(1.04);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+
+    .polaroid__hint {
+      opacity: 1;
+    }
+  }
+}
+
+// Pressed (also on touch): the card sinks into the table, so the tap visibly lands on the photo.
+.polaroid:active {
+  transform: rotate(var(--tilt)) scale(0.97);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+// Once, shortly after load, the centre card is picked up and put down: shows the cards respond, even without hover.
+@media (prefers-reduced-motion: no-preference) {
+  .polaroid--2 {
+    animation: polaroid-peek 1200ms ease-in-out 2s;
+
+    .polaroid__hint {
+      animation: polaroid-peek-hint 1200ms ease-in-out 2s;
+    }
+  }
+}
+
+@keyframes polaroid-peek {
+  35%,
+  65% {
+    transform: rotate(calc(var(--tilt) * 0.5)) translateY(-8px) scale(1.05);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+  }
+}
+
+@keyframes polaroid-peek-hint {
+  35%,
+  65% {
+    opacity: 1;
+  }
 }
 
 .hero__title {
@@ -118,7 +194,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .polaroid img {
+  .polaroid,
+  .polaroid img,
+  .polaroid__hint {
     transition: none;
   }
 }

@@ -103,9 +103,8 @@ export class Hero {
     this.pointerStartX = null;
     this.suppressClick = distance >= TAP_MAX_PX;
 
-    // A tap on a polaroid opens it (via its click handler) instead of changing the slide.
-    const onPolaroid = event.target instanceof Element && event.target.closest('.polaroid') !== null;
-    if ((distance < TAP_MAX_PX && !onPolaroid) || distance >= SWIPE_MIN_PX) {
+    // Only a swipe changes the slide: taps are left for the polaroids, so tapping never looks like "next photo".
+    if (distance >= SWIPE_MIN_PX) {
       this.next();
       this.stopTimer();
       this.startTimer();

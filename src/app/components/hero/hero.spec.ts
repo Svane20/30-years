@@ -85,11 +85,18 @@ describe('Hero', () => {
     expect(visible.map(img => img.getAttribute('src'))).toEqual(srcs(invitation.slides[0]));
   });
 
-  it('advances on tap and restarts the timer', () => {
+  it('does not advance on a tap, so taps only ever open photos', () => {
     create();
-    vi.advanceTimersByTime(3000);
     pointer('pointerdown', 100);
     pointer('pointerup', 102);
+    expect(fixture.componentInstance.current()).toBe(0);
+  });
+
+  it('advances on a swipe and restarts the timer', () => {
+    create();
+    vi.advanceTimersByTime(3000);
+    pointer('pointerdown', 200);
+    pointer('pointerup', 150);
     expect(fixture.componentInstance.current()).toBe(1);
 
     vi.advanceTimersByTime(SLIDE_INTERVAL_MS - 1);
@@ -120,14 +127,14 @@ describe('Hero', () => {
     expect(fixture.componentInstance.current()).toBe(1);
   });
 
-  it('does not rotate automatically with reduced motion, but still reacts to taps', () => {
+  it('does not rotate automatically with reduced motion, but still reacts to swipes', () => {
     vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }));
     create();
     vi.advanceTimersByTime(SLIDE_INTERVAL_MS * 3);
     expect(fixture.componentInstance.current()).toBe(0);
 
     pointer('pointerdown', 100);
-    pointer('pointerup', 100);
+    pointer('pointerup', 50);
     expect(fixture.componentInstance.current()).toBe(1);
   });
 
